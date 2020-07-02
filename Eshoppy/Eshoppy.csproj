@@ -35,5 +35,48 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FinanceModule\FinanceManager.cs" />
+    <Compile Include="FinanceModule\Interfaces\ICredit.cs" />
+    <Compile Include="FinanceModule\Interfaces\ICurrency.cs" />
+    <Compile Include="FinanceModule\Interfaces\IFinanceManager.cs" />
+    <Compile Include="FinanceModule\Models\AustralianDolarCurrency.cs" />
+    <Compile Include="FinanceModule\Models\Credit.cs" />
+    <Compile Include="FinanceModule\Interfaces\IAccount.cs" />
+    <Compile Include="FinanceModule\Interfaces\IBank.cs" />
+    <Compile Include="FinanceModule\Models\Account.cs" />
+    <Compile Include="FinanceModule\Models\Bank.cs" />
+    <Compile Include="FinanceModule\Models\Currency.cs" />
+    <Compile Include="FinanceModule\Models\DolarCurrency.cs" />
+    <Compile Include="FinanceModule\Models\EuroCurrency.cs" />
+    <Compile Include="FinanceModule\Models\KuwaitiDinarCurrency.cs" />
+    <Compile Include="SalesModule\Interfaces\IOffer.cs" />
+    <Compile Include="SalesModule\Interfaces\IProduct.cs" />
+    <Compile Include="SalesModule\Interfaces\ISalesManager.cs" />
+    <Compile Include="SalesModule\Interfaces\ITransport.cs" />
+    <Compile Include="SalesModule\ListOffers.cs" />
+    <Compile Include="SalesModule\Models\Offer.cs" />
+    <Compile Include="SalesModule\Models\Product.cs" />
+    <Compile Include="SalesModule\Models\Transport.cs" />
+    <Compile Include="TransactionModule\Interfaces\ITransaction.cs" />
+    <Compile Include="TransactionModule\Interfaces\ITransactionManager.cs" />
+    <Compile Include="TransactionModule\Interfaces\ITransactionType.cs" />
+    <Compile Include="TransactionModule\Models\InstalmentsTransactionType.cs" />
+    <Compile Include="TransactionModule\Models\Transaction.cs" />
+    <Compile Include="TransactionModule\Models\TransactionType.cs" />
+    <Compile Include="TransactionModule\Models\WithoutInstalmentsTransactionType.cs" />
+    <Compile Include="TransactionModule\TransactionList.cs" />
+    <Compile Include="TransactionModule\TransactionManager.cs" />
+    <Compile Include="UserModule\ClientManager.cs" />
+    <Compile Include="UserModule\Interfaces\IClient.cs" />
+    <Compile Include="UserModule\Interfaces\IClientManager.cs" />
+    <Compile Include="UserModule\Interfaces\IOrganization.cs" />
+    <Compile Include="UserModule\Interfaces\IUser.cs" />
+    <Compile Include="UserModule\Models\Organization.cs" />
+    <Compile Include="UserModule\Models\User.cs" />
+    <Compile Include="UserModule\Services\UserService.cs" />
+    <Compile Include="UserModule\ShoppingClient.cs" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -8,5 +8,7 @@ namespace Eshoppy.FinanceModule.Interfaces
 {
     public interface IAccount
     {
+        int Id { get; set; }
+        int AccountNumber { get; set; }
     }
 }

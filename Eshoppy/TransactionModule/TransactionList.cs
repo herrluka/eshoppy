@@ -9,6 +9,6 @@ namespace Eshoppy.TransactionModule
 {
     public class TransactionList
     {
-        public List<ITransaction> transactions { get; set; }
+        public List<ITransaction> Transactions { get; set; }
     }
 }

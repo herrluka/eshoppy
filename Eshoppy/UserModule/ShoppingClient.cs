@@ -9,7 +9,23 @@ namespace Eshoppy.UserModule
 {
     public class ShoppingClient
     {
-        public List<IClient> Users;
+        public List<IClient> Clients;
+
+        public ShoppingClient()
+        {
+            Clients = new List<IClient>();
+        }
+
+        public void AddClient(IClient client)
+        {
+            foreach (IClient c in Clients ){
+                if (c.Id == client.Id)
+                {
+                    throw new Exception("There is client with same id");
+                }
+            }
+            Clients.Add(client);
+        }
     }
 }
 

@@ -9,6 +9,7 @@ namespace Eshoppy.FinanceModule.Models
 {
     public class Account : IAccount
     {
-
+        public int Id { get; set; }
+        public int AccountNumber { get; set; }
     }
 }
