@@ -11,12 +11,12 @@ namespace Eshoppy.UserModule.Interfaces
 {
     public interface IClientManager
     {
-        void RegisterUser(int id, String name, String surname, String email, String phone, string adress);
-        void RegisterOrg(int id, int tin, string name, string adress, string phoneNumber, string email);
+        void RegisterUser(String name, String surname, String email, String phone, string adress);
+        void RegisterOrg(int tin, string name, string adress, string phoneNumber, string email);
         void ChangeUserAccount(IUser user, List<IAccount> accounts);
         void ChangeOrgAccount(IOrganization organization, List<IAccount> accounts);
         List<ITransaction> SearchHistory(IClient client, DateTime date, int transactionCategory);
-        IClient GetClientById(int id);
+        IClient GetClientById(Guid id);
         void AddFunds(IClient client, double amount, ICurrency currency);
     }
 }

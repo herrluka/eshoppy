@@ -11,21 +11,20 @@ namespace Eshoppy.UserModule.Models
 {
     public class Organization : IOrganization
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public int Tin { get; set; }
         public String Name { get; set; }
-        public String Adress { get; set; }
+        public String Address { get; set; }
         public String PhoneNumber { get; set; }
         public String Email { get; set; }
         public double AverageTransactionRate { get; set; }
         public List<IAccount> Accounts { get; set; }
 
-        public Organization(int id, int tin, string name, string adress, string phoneNumber, string email)
+        public Organization(int tin, string name, string address, string phoneNumber, string email)
         {
-            Id = id;
             Tin = tin;
             Name = name;
-            Adress = adress;
+            Address = address;
             PhoneNumber = phoneNumber;
             Email = email;
             AverageTransactionRate = 0;

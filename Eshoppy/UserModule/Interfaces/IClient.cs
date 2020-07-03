@@ -9,7 +9,10 @@ namespace Eshoppy.UserModule.Interfaces
 {
     public interface IClient
     {
-        int Id { get; set; }
+        Guid Id { get; set; }
         List<IAccount> Accounts { get; set; }
+        String Email { get; set; }
+        String Phone { get; set; }
+        String Address { get; set; }
     }
 }

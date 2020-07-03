@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace Eshoppy.FinanceModule.Models
 {
-    public class KuwaitiDinarCurrency : Currency
+    public class DinarCurrency : Currency
     {
-        public KuwaitiDinarCurrency(double multiplyFactor)
-        {
-            MultiplyFactor = multiplyFactor;
-        }
     }
 }

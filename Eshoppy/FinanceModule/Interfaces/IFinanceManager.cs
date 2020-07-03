@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Eshoppy.UserModule.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,15 +9,15 @@ namespace Eshoppy.FinanceModule.Interfaces
 {
     public interface IFinanceManager
     {
-        void CreateAccount();
-        void CreateBank();
-        void CreateCredit();
-        void GetAccountById();
-        void AskCredit();
-        void AccountPayment();
-        void CreditPayment();
-        void Convert();
-        void CheckBalance();
+        IAccount CreateAccount(DateTime dateValid, IBank bank);
+        IBank CreateBank(string name, string address, string email, string phone);
+        ICredit CreateCredit(double minAmount, double interest, int minYears, int maxYears, IBank bank);
+        IAccount GetAccountById(Guid accountId);
+        bool AskCredit(Guid userId, double amount, Guid creditId, byte numberOfYears);
+        void AccountPayment(Guid accountId, double amount);
+        void CreditPayment(Guid accountId, double amount);
+        double Convert(ICurrency currency, double amount);
+        double? CheckBalance(Guid accountId);
 
     }
 }

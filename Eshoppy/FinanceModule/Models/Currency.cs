@@ -9,5 +9,6 @@ namespace Eshoppy.FinanceModule.Models
 {
     public abstract class Currency : ICurrency
     {
+        public double MultiplyFactor { get ; set; }
     }
 }

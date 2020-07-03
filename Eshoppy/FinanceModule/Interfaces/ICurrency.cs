@@ -8,5 +8,6 @@ namespace Eshoppy.FinanceModule.Interfaces
 {
     public interface ICurrency
     {
+        double MultiplyFactor { get; set;}
     }
 }

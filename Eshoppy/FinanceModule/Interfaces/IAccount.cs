@@ -8,7 +8,13 @@ namespace Eshoppy.FinanceModule.Interfaces
 {
     public interface IAccount
     {
-        int Id { get; set; }
+        Guid Id { get; set; }
         int AccountNumber { get; set; }
+        double Amount { get; set; }
+        DateTime DateValid { get; set; }
+        IBank Bank { get; set; }
+        double CreditDebt { get; set; }
+        bool CreditAvailable { get; set; }
+        ICredit Credit { get; set; }
     }
 }

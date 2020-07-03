@@ -34,8 +34,13 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FinanceModule\BankList.cs" />
     <Compile Include="FinanceModule\FinanceManager.cs" />
     <Compile Include="FinanceModule\Interfaces\ICredit.cs" />
     <Compile Include="FinanceModule\Interfaces\ICurrency.cs" />
@@ -48,8 +53,15 @@
     <Compile Include="FinanceModule\Models\Bank.cs" />
     <Compile Include="FinanceModule\Models\Currency.cs" />
     <Compile Include="FinanceModule\Models\DolarCurrency.cs" />
+    <Compile Include="FinanceModule\Models\DinarCurrency.cs" />
     <Compile Include="FinanceModule\Models\EuroCurrency.cs" />
     <Compile Include="FinanceModule\Models\KuwaitiDinarCurrency.cs" />
+    <Compile Include="FinanceModule\Services\FinanceService.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="SalesModule\Interfaces\IOffer.cs" />
     <Compile Include="SalesModule\Interfaces\IProduct.cs" />
     <Compile Include="SalesModule\Interfaces\ISalesManager.cs" />
@@ -77,6 +89,8 @@
     <Compile Include="UserModule\Services\UserService.cs" />
     <Compile Include="UserModule\ShoppingClient.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

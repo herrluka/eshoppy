@@ -10,9 +10,6 @@ namespace Eshoppy.UserModule.Interfaces
     {
         int Tin { get; set; }
         String Name { get; set; }
-        String Adress { get; set; }
-        String PhoneNumber { get; set; }
-        String Email { get; set; }
         double AverageTransactionRate { get; set; }
     }
 }

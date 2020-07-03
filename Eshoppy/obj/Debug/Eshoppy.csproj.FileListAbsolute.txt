@@ -1,0 +1,2 @@
+C:\Users\Serinho\source\repos\Eshoppy\Eshoppy\obj\Debug\Eshoppy.csprojAssemblyReference.cache
+C:\Users\Serinho\source\repos\Eshoppy\Eshoppy\obj\Debug\Eshoppy.csproj.CoreCompileInputs.cache

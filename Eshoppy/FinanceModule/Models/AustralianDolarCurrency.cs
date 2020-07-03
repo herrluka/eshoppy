@@ -8,5 +8,9 @@ namespace Eshoppy.FinanceModule.Models
 {
     public class AustralianDolarCurrency : Currency
     {
+        public AustralianDolarCurrency(double multiplyFactor)
+        {
+            MultiplyFactor = multiplyFactor;
+        }
     }
 }

@@ -11,8 +11,5 @@ namespace Eshoppy.UserModule.Interfaces
     {
         String Name { get; set; }
         String Surname { get; set; }
-        String Email { get; set; }
-        String Phone { get; set; }
-        String Adress { get; set; }
     }
 }

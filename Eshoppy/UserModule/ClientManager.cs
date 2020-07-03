@@ -1,5 +1,7 @@
-﻿using Eshoppy.FinanceModule.Interfaces;
+﻿using Eshoppy.FinanceModule;
+using Eshoppy.FinanceModule.Interfaces;
 using Eshoppy.FinanceModule.Models;
+using Eshoppy.FinanceModule.Services;
 using Eshoppy.TransactionModule;
 using Eshoppy.TransactionModule.Interfaces;
 using Eshoppy.UserModule.Interfaces;
@@ -12,26 +14,28 @@ using System.Threading.Tasks;
 
 namespace Eshoppy.UserModule
 {
-    class ClientManager : IClientManager
+    public class ClientManager : IClientManager
     {
         private ShoppingClient clientList;
         private TransactionList transactionList;
+        private FinanceManager financeManager;
 
-        public ClientManager(ShoppingClient clientList, TransactionList transactionList)
+        public ClientManager(ShoppingClient clientList, TransactionList transactionList, FinanceManager financeManager)
         {
             this.clientList = clientList;
             this.transactionList = transactionList;
+            this.financeManager = financeManager;
         }
 
-        public void RegisterUser(int id, String name, String surname, String email, String phone, string adress)
+        public void RegisterUser(String name, String surname, String email, String phone, string adress)
         {
-            IUser user = new User(id, name, surname, email, phone, adress);
+            IUser user = new User(name, surname, email, phone, adress);
             this.clientList.AddClient(user);
         }
 
-        public void RegisterOrg(int id, int tin, string name, string adress, string phoneNumber, string email)
+        public void RegisterOrg(int tin, string name, string adress, string phoneNumber, string email)
         {
-            IOrganization organization = new Organization(id, tin, name, adress, phoneNumber, email);
+            IOrganization organization = new Organization(tin, name, adress, phoneNumber, email);
             this.clientList.AddClient(organization);
         }
 
@@ -40,7 +44,7 @@ namespace Eshoppy.UserModule
             foreach (IAccount userAccount in user.Accounts)
             {
                 foreach (IAccount newAccount in accounts)
-                if (userAccount.Id == newAccount.Id)
+                if (userAccount.Id.Equals(newAccount.Id))
                     {
                         userAccount.AccountNumber = newAccount.AccountNumber;
                     }
@@ -52,7 +56,7 @@ namespace Eshoppy.UserModule
             foreach (IAccount organizationAccount in organization.Accounts)
             {
                 foreach (IAccount newAccount in accounts)
-                    if (organizationAccount.Id == newAccount.Id)
+                    if (organizationAccount.Id.Equals(newAccount.Id))
                     {
                         organizationAccount.AccountNumber = newAccount.AccountNumber;
                     }
@@ -90,11 +94,11 @@ namespace Eshoppy.UserModule
             }
         }
 
-        public IClient GetClientById(int id)
+        public IClient GetClientById(Guid id)
         {
             foreach (IClient client in this.clientList.Clients)
             {
-                if (client.Id == id)
+                if (client.Id.Equals(id))
                 {
                     return client;
                 }
@@ -105,7 +109,37 @@ namespace Eshoppy.UserModule
 
         public void AddFunds(IClient client, double amount, ICurrency currency)
         {
-            throw new NotImplementedException();
+            if (client.Accounts.Count > 0)
+            {
+                IAccount account = client.Accounts[0];
+                if (!(currency is DinarCurrency))
+                {
+                    amount *= currency.MultiplyFactor;
+                }
+
+                if (client is IOrganization)
+                {
+                    if (amount < 10000)
+                    {
+                        Console.Error.Write("Amount cannot be smaller than 10000 for organizations");
+                        throw new Exception("Amount cannot be smaller than 10000 for organizations");
+                    }
+                }
+
+                if (account.Credit != null)
+                {
+                    financeManager.CreditPayment(account.Id, amount);
+                    FinanceService.SendEmail(client, "Credit debt is reduced.");
+                }
+                else
+                {
+                    financeManager.AccountPayment(account.Id, amount);
+                }
+            }
+            else
+            {
+                throw new Exception("This user has 0 accounts");
+            }
         }
     }
 }

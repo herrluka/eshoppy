@@ -10,22 +10,21 @@ namespace Eshoppy.UserModule.Models
 {
     public class User : IUser
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public String Name { get; set; }
         public String Surname { get; set; }
         public String Email { get; set; }
         public String Phone { get; set; }
-        public String Adress { get; set; }
+        public String Address { get; set; }
         public List<IAccount> Accounts { get; set; }
 
-        public User(int id, string name, string surname, string email, string phone, string adress)
+        public User(string name, string surname, string email, string phone, string address)
         {
-            Id = id;
             Name = name;
             Surname = surname;
             Email = email;
             Phone = phone;
-            Adress = adress;
+            Address = address;
             Accounts = new List<IAccount>();
         }
     }
