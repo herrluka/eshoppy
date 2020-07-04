@@ -70,6 +70,7 @@
     <Compile Include="SalesModule\Models\Offer.cs" />
     <Compile Include="SalesModule\Models\Product.cs" />
     <Compile Include="SalesModule\Models\Transport.cs" />
+    <Compile Include="SalesModule\SalesManager.cs" />
     <Compile Include="TransactionModule\Interfaces\ITransaction.cs" />
     <Compile Include="TransactionModule\Interfaces\ITransactionManager.cs" />
     <Compile Include="TransactionModule\Interfaces\ITransactionType.cs" />

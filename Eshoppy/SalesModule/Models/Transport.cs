@@ -9,5 +9,8 @@ namespace Eshoppy.SalesModule.Models
 {
     public class Transport : ITransport
     {
+        public Guid Id { get; set; }
+        public String Name { get; set; }
+        public double TransportCoefficient { get; set; }
     }
 }

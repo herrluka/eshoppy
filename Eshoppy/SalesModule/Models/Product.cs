@@ -9,5 +9,17 @@ namespace Eshoppy.SalesModule.Models
 {
     public class Product : IProduct
     {
+        public Guid Id { get; set; }
+        public String Name { get; set; }
+        public double Price{ get; set; }
+        public double AvailableQuantity { get; set; }
+
+        public Product(string name, double price, double availableQuantity)
+        {
+            Id = new Guid();
+            Name = name;
+            Price = price;
+            AvailableQuantity = availableQuantity;
+        }
     }
 }
