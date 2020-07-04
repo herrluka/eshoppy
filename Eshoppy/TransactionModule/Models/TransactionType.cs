@@ -9,5 +9,7 @@ namespace Eshoppy.TransactionModule.Models
 {
     public abstract class TransactionType : ITransactionType
     {
+        public Guid Id { get; set; }
+        public String Name { get; set; }
     }
 }

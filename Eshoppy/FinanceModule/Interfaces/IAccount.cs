@@ -16,5 +16,6 @@ namespace Eshoppy.FinanceModule.Interfaces
         double CreditDebt { get; set; }
         bool CreditAvailable { get; set; }
         ICredit Credit { get; set; }
+        double CheckBalance();
     }
 }

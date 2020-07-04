@@ -8,5 +8,6 @@ namespace Eshoppy.TransactionModule.Models
 {
     public class InstalmentsTransactionType : TransactionType
     {
+        public double InstalmentPrice { get; set; }
     }
 }

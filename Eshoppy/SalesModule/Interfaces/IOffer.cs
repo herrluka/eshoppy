@@ -15,5 +15,7 @@ namespace Eshoppy.SalesModule.Interfaces
         List<ITransport> AvailableTransports { get; set; }
         double OrderPrice { get; set; }
         double TransportPrice { get; set; }
+        double CheckDiscount();
+        int GetNumberOfProducts();
     }
 }

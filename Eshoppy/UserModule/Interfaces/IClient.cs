@@ -1,4 +1,5 @@
 ﻿using Eshoppy.FinanceModule.Interfaces;
+using Eshoppy.TransactionModule.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace Eshoppy.UserModule.Interfaces
         String Email { get; set; }
         String Phone { get; set; }
         String Address { get; set; }
+        List<ITransaction> Transactions { get; set; }
     }
 }

@@ -9,10 +9,14 @@ namespace Eshoppy.TransactionModule.Interfaces
 {
     public interface ITransaction
     {
-        int Id { get; set; }
+        Guid Id { get; set; }
         DateTime TransactionDate { get; set; }
         int TransactionCategory { get; set; }
         IClient Buyer { get; set; }
         IClient Seler { get; set; }
+        double TransactionPrice { get; set; }
+        ITransactionType TransactionType { get; set; }
+        byte TransactionEvaluation { get; set; }
+        double Discount { get; set; }
     }
 }

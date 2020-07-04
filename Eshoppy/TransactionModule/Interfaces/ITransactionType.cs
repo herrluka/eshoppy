@@ -8,5 +8,7 @@ namespace Eshoppy.TransactionModule.Interfaces
 {
     public interface ITransactionType
     {
+        Guid Id { get; set; }
+        String Name { get; set; }
     }
 }

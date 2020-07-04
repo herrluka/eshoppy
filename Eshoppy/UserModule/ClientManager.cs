@@ -17,13 +17,11 @@ namespace Eshoppy.UserModule
     public class ClientManager : IClientManager
     {
         private ShoppingClient clientList;
-        private TransactionList transactionList;
         private FinanceManager financeManager;
 
-        public ClientManager(ShoppingClient clientList, TransactionList transactionList, FinanceManager financeManager)
+        public ClientManager(ShoppingClient clientList, FinanceManager financeManager)
         {
             this.clientList = clientList;
-            this.transactionList = transactionList;
             this.financeManager = financeManager;
         }
 
@@ -68,7 +66,7 @@ namespace Eshoppy.UserModule
             List<ITransaction> transactions = new List<ITransaction>();
             if (transactionCategory == 0)
             {
-                foreach (ITransaction transaction in transactionList.Transactions)
+                foreach (ITransaction transaction in client.Transactions)
                 {
                     if (DateTime.Compare(transaction.TransactionDate, date) > 0 && transaction.Buyer.Equals(client))
                     {
@@ -79,7 +77,7 @@ namespace Eshoppy.UserModule
             }
             else if (transactionCategory == 1)
             {
-                foreach (ITransaction transaction in transactionList.Transactions)
+                foreach (ITransaction transaction in client.Transactions)
                 {
                     if (DateTime.Compare(transaction.TransactionDate, date) > 0 && transaction.Seler.Equals(client))
                     {
