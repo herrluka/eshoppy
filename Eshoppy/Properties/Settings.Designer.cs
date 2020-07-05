@@ -25,7 +25,7 @@ namespace Eshoppy.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("bla")]
+        [global::System.Configuration.DefaultSettingValueAttribute("luka036test@gmail.com")]
         public string username {
             get {
                 return ((string)(this["username"]));
@@ -34,7 +34,7 @@ namespace Eshoppy.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("bla")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Lozinka123")]
         public string password {
             get {
                 return ((string)(this["password"]));

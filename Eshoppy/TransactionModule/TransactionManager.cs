@@ -1,5 +1,4 @@
 ﻿using Eshoppy.FinanceModule.Interfaces;
-using Eshoppy.FinanceModule.Services;
 using Eshoppy.SalesModule.Interfaces;
 using Eshoppy.TransactionModule.Interfaces;
 using Eshoppy.TransactionModule.Models;
@@ -23,12 +22,12 @@ namespace Eshoppy.TransactionModule
             this.transactionList = transactionList;
         }
 
-        public ITransaction CreateTransaction(Guid buyerId, Guid selerId, IOffer offer, ITransactionType transactionType, byte evaluation)
+        public ITransaction CreateTransaction(Guid buyerId, Guid sellerId, IOffer offer, ITransactionType transactionType, byte evaluation)
         {
             ITransaction transaction = new Transaction();
             transaction.Id = new Guid();
             IClient buyer = clientManager.GetClientById(buyerId);
-            IClient seler = clientManager.GetClientById(selerId);
+            IClient seller = clientManager.GetClientById(sellerId);
 
             transaction.TransactionDate = new DateTime();
             transaction.TransactionEvaluation = evaluation;
@@ -57,8 +56,8 @@ namespace Eshoppy.TransactionModule
                     transaction.TransactionCategory = 0;
                     buyer.Transactions.Add(transaction);
                     transaction.TransactionCategory = 1;
-                    seler.Transactions.Add(transaction);
-                    FinanceService.SendEmail(buyer, "Transaction was sucessfull");
+                    seller.Transactions.Add(transaction);
+                    Utils.Utils.SendEmail(buyer, "Transaction was sucessfull");
                 }
                 else if ( transactionType is InstalmentsTransactionType)
                 {
@@ -68,13 +67,13 @@ namespace Eshoppy.TransactionModule
                     transaction.TransactionCategory = 0;
                     buyer.Transactions.Add(transaction);
                     transaction.TransactionCategory = 1;
-                    seler.Transactions.Add(transaction);
-                    FinanceService.SendEmail(buyer, "Transaction was sucessfull");
+                    seller.Transactions.Add(transaction);
+                    Utils.Utils.SendEmail(buyer, "Transaction was sucessfull");
                 }
             }
             else
             {
-                FinanceService.SendEmail(buyer, "On your accounts there is not enough money");
+                Utils.Utils.SendEmail(buyer, "On your accounts there is not enough money");
                 return null;
             }
 

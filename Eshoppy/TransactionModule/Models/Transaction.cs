@@ -14,7 +14,7 @@ namespace Eshoppy.TransactionModule.Models
         public DateTime TransactionDate { get; set; }
         public int TransactionCategory { get; set; }
         public IClient Buyer { get; set; }
-        public IClient Seler { get; set; }
+        public IClient Seller { get; set; }
         public double TransactionPrice { get; set; }
         public ITransactionType TransactionType { get; set; }
         public byte TransactionEvaluation { get; set; }

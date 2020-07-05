@@ -15,7 +15,7 @@ namespace Eshoppy.UserModule.Models
         public String Name { get; set; }
         public String Surname { get; set; }
         public String Email { get; set; }
-        public String Phone { get; set; }
+        public String PhoneNumber { get; set; }
         public String Address { get; set; }
         public List<IAccount> Accounts { get; set; }
         public List<ITransaction> Transactions { get; set; }
@@ -25,10 +25,36 @@ namespace Eshoppy.UserModule.Models
             Name = name;
             Surname = surname;
             Email = email;
-            Phone = phone;
+            PhoneNumber = phone;
             Address = address;
             Accounts = new List<IAccount>();
             Transactions = new List<ITransaction>();
+        }
+
+        public IAccount GetAccountByAccountNumber(int accountNumber)
+        {
+            foreach (IAccount account in this.Accounts)
+            {
+                if (account.AccountNumber == accountNumber)
+                {
+                    return account;
+                }
+            }
+            return null;
+        }
+
+        public List<IAccount> GetAccountsWithCreditAvailable()
+        {
+            List<IAccount> accounts = new List<IAccount>();
+
+            foreach (IAccount a in Accounts)
+            {
+                if (a.CreditAvailable)
+                {
+                    accounts.Add(a);
+                }
+            }
+            return accounts;
         }
     }
 }

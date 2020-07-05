@@ -1,5 +1,5 @@
 ﻿using Eshoppy.FinanceModule.Interfaces;
-using Eshoppy.FinanceModule.Services;
+using Eshoppy.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +22,7 @@ namespace Eshoppy.FinanceModule.Models
         public Account(DateTime dateValid, IBank bank)
         {
             Id = Guid.NewGuid();
-            AccountNumber = FinanceService.getId();
+            AccountNumber = Utils.Utils.getId();
             Amount = 0;
             DateValid = dateValid;
             Bank = bank;

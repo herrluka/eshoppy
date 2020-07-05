@@ -11,5 +11,6 @@ namespace Eshoppy.UserModule.Interfaces
     {
         String Name { get; set; }
         String Surname { get; set; }
+        IAccount GetAccountByAccountNumber(int accountNumber);
     }
 }

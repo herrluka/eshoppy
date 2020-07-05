@@ -1,4 +1,5 @@
 ﻿using Eshoppy.FinanceModule.Interfaces;
+using Eshoppy.TransactionModule.Interfaces;
 using Eshoppy.UserModule.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace Eshoppy.UserModule.Models
         public String Email { get; set; }
         public double AverageTransactionRate { get; set; }
         public List<IAccount> Accounts { get; set; }
+        public List<ITransaction> Transactions { get; set ; }
 
         public Organization(int tin, string name, string address, string phoneNumber, string email)
         {
@@ -29,6 +31,21 @@ namespace Eshoppy.UserModule.Models
             Email = email;
             AverageTransactionRate = 0;
             Accounts = new List<IAccount>();
+            Transactions = new List<ITransaction>();
+        }
+
+        public List<IAccount> GetAccountsWithCreditAvailable()
+        {
+            List<IAccount> accounts = new List<IAccount>();
+
+            foreach (IAccount a in Accounts)
+            {
+                if (a.CreditAvailable)
+                {
+                    accounts.Add(a);
+                }
+            }
+            return accounts;
         }
     }
 }

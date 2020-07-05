@@ -13,8 +13,9 @@ namespace Eshoppy.UserModule.Interfaces
         Guid Id { get; set; }
         List<IAccount> Accounts { get; set; }
         String Email { get; set; }
-        String Phone { get; set; }
+        String PhoneNumber { get; set; }
         String Address { get; set; }
         List<ITransaction> Transactions { get; set; }
+        List<IAccount> GetAccountsWithCreditAvailable();
     }
 }

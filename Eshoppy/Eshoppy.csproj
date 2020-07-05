@@ -56,7 +56,6 @@
     <Compile Include="FinanceModule\Models\DinarCurrency.cs" />
     <Compile Include="FinanceModule\Models\EuroCurrency.cs" />
     <Compile Include="FinanceModule\Models\KuwaitiDinarCurrency.cs" />
-    <Compile Include="FinanceModule\Services\FinanceService.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -87,8 +86,8 @@
     <Compile Include="UserModule\Interfaces\IUser.cs" />
     <Compile Include="UserModule\Models\Organization.cs" />
     <Compile Include="UserModule\Models\User.cs" />
-    <Compile Include="UserModule\Services\UserService.cs" />
     <Compile Include="UserModule\ShoppingClient.cs" />
+    <Compile Include="Utils\Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

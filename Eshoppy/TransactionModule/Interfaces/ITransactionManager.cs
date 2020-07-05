@@ -9,7 +9,7 @@ namespace Eshoppy.TransactionModule.Interfaces
 {
     public interface ITransactionManager
     {
-        ITransaction CreateTransaction(Guid buyerId, Guid selerId, IOffer offer, ITransactionType transaction, byte evaluation);
+        ITransaction CreateTransaction(Guid buyerId, Guid sellerId, IOffer offer, ITransactionType transaction, byte evaluation);
 
     }
 }

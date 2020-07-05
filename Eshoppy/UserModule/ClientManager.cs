@@ -1,7 +1,6 @@
 ﻿using Eshoppy.FinanceModule;
 using Eshoppy.FinanceModule.Interfaces;
 using Eshoppy.FinanceModule.Models;
-using Eshoppy.FinanceModule.Services;
 using Eshoppy.TransactionModule;
 using Eshoppy.TransactionModule.Interfaces;
 using Eshoppy.UserModule.Interfaces;
@@ -45,6 +44,7 @@ namespace Eshoppy.UserModule
                 if (userAccount.Id.Equals(newAccount.Id))
                     {
                         userAccount.AccountNumber = newAccount.AccountNumber;
+                        break;
                     }
             }
         }
@@ -57,6 +57,7 @@ namespace Eshoppy.UserModule
                     if (organizationAccount.Id.Equals(newAccount.Id))
                     {
                         organizationAccount.AccountNumber = newAccount.AccountNumber;
+                        break;
                     }
             }
         }
@@ -79,7 +80,7 @@ namespace Eshoppy.UserModule
             {
                 foreach (ITransaction transaction in client.Transactions)
                 {
-                    if (DateTime.Compare(transaction.TransactionDate, date) > 0 && transaction.Seler.Equals(client))
+                    if (DateTime.Compare(transaction.TransactionDate, date) > 0 && transaction.Seller.Equals(client))
                     {
                         transactions.Add(transaction);
                     }
@@ -127,7 +128,7 @@ namespace Eshoppy.UserModule
                 if (account.Credit != null)
                 {
                     financeManager.CreditPayment(account.Id, amount);
-                    FinanceService.SendEmail(client, "Credit debt is reduced.");
+                    Utils.Utils.SendEmail(client, "Credit debt is reduced.");
                 }
                 else
                 {
