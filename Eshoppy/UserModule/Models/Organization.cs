@@ -24,6 +24,7 @@ namespace Eshoppy.UserModule.Models
 
         public Organization(int tin, string name, string address, string phoneNumber, string email)
         {
+            Id = Guid.NewGuid();
             Tin = tin;
             Name = name;
             Address = address;

@@ -11,9 +11,9 @@ namespace Eshoppy.UserModule
     {
         public List<IClient> Clients;
 
-        public ShoppingClient()
+        public ShoppingClient(List<IClient> list)
         {
-            Clients = new List<IClient>();
+            Clients = list;
         }
 
         public void AddClient(IClient client)

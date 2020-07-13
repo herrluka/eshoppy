@@ -1,2 +1,7 @@
 C:\Users\Serinho\source\repos\Eshoppy\Eshoppy\obj\Debug\Eshoppy.csprojAssemblyReference.cache
 C:\Users\Serinho\source\repos\Eshoppy\Eshoppy\obj\Debug\Eshoppy.csproj.CoreCompileInputs.cache
+C:\Users\Serinho\source\repos\Eshoppy\Eshoppy\bin\Debug\Eshoppy.dll.config
+C:\Users\Serinho\source\repos\Eshoppy\Eshoppy\bin\Debug\Eshoppy.dll
+C:\Users\Serinho\source\repos\Eshoppy\Eshoppy\bin\Debug\Eshoppy.pdb
+C:\Users\Serinho\source\repos\Eshoppy\Eshoppy\obj\Debug\Eshoppy.dll
+C:\Users\Serinho\source\repos\Eshoppy\Eshoppy\obj\Debug\Eshoppy.pdb

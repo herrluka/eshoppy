@@ -31,8 +31,8 @@ namespace Eshoppy.TransactionModule
 
             transaction.TransactionDate = new DateTime();
             transaction.TransactionEvaluation = evaluation;
-            transaction.TransactionPrice = offer.OrderPrice + offer.TransportPrice;
-            double discount = offer.CheckDiscount();
+            transaction.TransactionPrice = offer.OfferPrice + offer.TransportPrice;
+            double discount = offer.CheckDiscount(DateTime.Now);
             transaction.Discount = discount;
 
             IAccount accountWithEnoughMoney = null;

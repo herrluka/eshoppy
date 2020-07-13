@@ -16,7 +16,7 @@ namespace Eshoppy.SalesModule.Models
 
         public Product(string name, double price, double availableQuantity)
         {
-            Id = new Guid();
+            Id = Guid.NewGuid();
             Name = name;
             Price = price;
             AvailableQuantity = availableQuantity;

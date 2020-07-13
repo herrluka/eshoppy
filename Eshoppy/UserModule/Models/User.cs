@@ -22,6 +22,7 @@ namespace Eshoppy.UserModule.Models
 
         public User(string name, string surname, string email, string phone, string address)
         {
+            Id = Guid.NewGuid();
             Name = name;
             Surname = surname;
             Email = email;

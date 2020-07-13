@@ -9,7 +9,7 @@ namespace Eshoppy.SalesModule.Interfaces
     public interface ISalesManager
     {
         IProduct CreateProduct(string name, double price, double availableQuantity);
-        IOffer CreateOffer(List<IProduct> products, DateTime dateCreated, DateTime dateValid, List<ITransport> transports, double price, double transportPrice);
+        IOffer CreateOffer(List<IProduct> products, DateTime dateCreated, DateTime dateValid, List<ITransport> transports);
         List<IOffer> GetOffersByTrasportId(Guid transportId);
         List<IOffer> GetOffersByProduct(Guid productId);
         IOffer GetLowestOffer();

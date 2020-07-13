@@ -12,5 +12,12 @@ namespace Eshoppy.SalesModule.Models
         public Guid Id { get; set; }
         public String Name { get; set; }
         public double TransportCoefficient { get; set; }
+
+        public Transport(string name, double transportCoefficient)
+        {
+            Id = Guid.NewGuid();
+            Name = name;
+            TransportCoefficient = transportCoefficient;
+        }
     }
 }

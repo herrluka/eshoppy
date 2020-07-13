@@ -19,11 +19,11 @@ namespace Eshoppy.FinanceModule.Models
         public bool CreditAvailable { get; set; }
         public ICredit Credit { get; set; }
 
-        public Account(DateTime dateValid, IBank bank)
+        public Account(DateTime dateValid, IBank bank, double amount)
         {
             Id = Guid.NewGuid();
             AccountNumber = Utils.Utils.getId();
-            Amount = 0;
+            Amount = amount;
             DateValid = dateValid;
             Bank = bank;
             CreditDebt = 0;

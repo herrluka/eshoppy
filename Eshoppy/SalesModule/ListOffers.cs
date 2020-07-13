@@ -10,5 +10,10 @@ namespace Eshoppy.SalesModule
     public class ListOffers
     {
         public List<IOffer> Offers { get; set; }
+
+        public ListOffers(List<IOffer> offers)
+        {
+            Offers = offers;
+        }
     }
 }

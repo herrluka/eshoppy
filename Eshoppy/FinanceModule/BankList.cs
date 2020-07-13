@@ -11,6 +11,11 @@ namespace Eshoppy.FinanceModule
     {
         public List<IBank> Banks { get; set; }
 
+        public BankList(List<IBank> banks)
+        {
+            Banks = banks;
+        }
+
         public void AddBank(IBank bank)
         {
             Banks.Add(bank);

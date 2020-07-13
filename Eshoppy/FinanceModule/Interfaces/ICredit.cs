@@ -11,10 +11,10 @@ namespace Eshoppy.FinanceModule.Interfaces
     {
         Guid Id { get; set; }
         double MinAmount { get; set; }
+        double MaxAmount { get; set; }
         double Interest { get; set; }
         int MinYears { get; set; }
         int MaxYears { get; set; }
-        IBank Bank { get; set; }
         bool Available { get; set; }
     }
 }

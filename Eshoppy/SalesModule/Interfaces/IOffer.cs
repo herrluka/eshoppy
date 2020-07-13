@@ -13,9 +13,10 @@ namespace Eshoppy.SalesModule.Interfaces
         DateTime DateCreated { get; set; }
         DateTime DateValid { get; set; }
         List<ITransport> AvailableTransports { get; set; }
-        double OrderPrice { get; set; }
+        double OfferPrice { get; set; }
         double TransportPrice { get; set; }
-        double CheckDiscount();
+        double GetPriceAsSumOfProducts(DateTime now);
+        double CheckDiscount(DateTime now);
         int GetNumberOfProducts();
     }
 }

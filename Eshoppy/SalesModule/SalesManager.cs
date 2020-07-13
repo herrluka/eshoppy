@@ -17,9 +17,11 @@ namespace Eshoppy.SalesModule
             this.offers = offers;
         }
 
-        public IOffer CreateOffer(List<IProduct> products, DateTime dateCreated, DateTime dateValid, List<ITransport> transports, double price, double transportPrice)
+        public IOffer CreateOffer(List<IProduct> products, DateTime dateCreated, DateTime dateValid, List<ITransport> transports)
         {
-            return new Offer(products, dateCreated, dateValid, transports, price, transportPrice);
+            IOffer offer = new Offer(products, dateCreated, dateValid, transports);
+            offer.OfferPrice = offer.GetPriceAsSumOfProducts(DateTime.Now);
+            return offer;
         }
 
         public IProduct CreateProduct(string name, double price, double availableQuantity)
@@ -29,7 +31,7 @@ namespace Eshoppy.SalesModule
 
         public IOffer GetLowestOffer()
         {
-            return offers.Offers.OrderBy(o => o.OrderPrice).First();
+            return offers.Offers.OrderBy(o => o.OfferPrice).First();
         }
 
         public List<IOffer> GetOffersByProduct(Guid productId)
@@ -70,7 +72,7 @@ namespace Eshoppy.SalesModule
 
         public void GetTransportCost(IOffer offer, ITransport transport)
         {
-            offer.TransportPrice = transport.TransportCoefficient * offer.OrderPrice;
+            offer.TransportPrice = transport.TransportCoefficient * offer.OfferPrice;
         }
 
         public void UpdateOffer(IOffer offer, List<IProduct> products = null, DateTime? dateCreated = null, DateTime? dateValid = null, List<ITransport> transports = null, double? price = null, double? transportPrice = null)
@@ -97,7 +99,7 @@ namespace Eshoppy.SalesModule
 
             if (price != null)
             {
-                offer.OrderPrice = (double)price;
+                offer.OfferPrice = (double)price;
             }
 
             if (transportPrice != null)

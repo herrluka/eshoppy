@@ -18,6 +18,7 @@ namespace Eshoppy.FinanceModule.Models
 
         public Bank(string name, string address, string email, string phone)
         {
+            Id = Guid.NewGuid();
             Name = name;
             Address = address;
             Email = email;

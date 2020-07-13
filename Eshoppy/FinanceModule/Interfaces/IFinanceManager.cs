@@ -9,9 +9,9 @@ namespace Eshoppy.FinanceModule.Interfaces
 {
     public interface IFinanceManager
     {
-        IAccount CreateAccount(DateTime dateValid, IBank bank);
+        IAccount CreateAccount(DateTime dateValid, IBank bank, double amount);
         IBank CreateBank(string name, string address, string email, string phone);
-        ICredit CreateCredit(double minAmount, double interest, int minYears, int maxYears, IBank bank);
+        ICredit CreateCredit(double minAmount, double maxAmount, double interest, int minYears, int maxYears);
         IAccount GetAccountById(Guid accountId);
         bool AskCredit(Guid userId, double amount, Guid creditId, byte numberOfYears);
         void AccountPayment(Guid accountId, double amount);

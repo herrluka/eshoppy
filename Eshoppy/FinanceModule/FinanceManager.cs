@@ -22,9 +22,9 @@ namespace Eshoppy.FinanceModule
             this.bankList = bankList;
         }
 
-        public IAccount CreateAccount(DateTime dateValid, IBank bank)
+        public IAccount CreateAccount(DateTime dateValid, IBank bank, double amount)
         {
-            return new Account(dateValid, bank);
+            return new Account(dateValid, bank, amount);
         }
 
         public IBank CreateBank(string name, string address, string email, string phone)
@@ -32,9 +32,9 @@ namespace Eshoppy.FinanceModule
             return new Bank(name, address, email, phone);
         }
 
-        public ICredit CreateCredit(double minAmount, double interest, int minYears, int maxYears, IBank bank)
+        public ICredit CreateCredit(double minAmount, double maxAmount, double interest, int minYears, int maxYears)
         {
-            return new Credit(minAmount, interest, minYears, maxYears, bank);
+            return new Credit(minAmount, maxAmount, interest, minYears, maxYears);
         }
 
         public IAccount GetAccountById(Guid accountId)
@@ -70,14 +70,21 @@ namespace Eshoppy.FinanceModule
             if (client != null)
             {
                 accounts = client.GetAccountsWithCreditAvailable();
-                ICredit credit = GetCreditById(bankList.Banks, creditId);
+
+                if (accounts.Count == 0)
+                {
+                    throw new NullReferenceException("There is not available credit");
+                }
+
+                ICredit credit = GetCreditById(creditId);
                 foreach (IAccount a in accounts)
                 {
-                    if (a.CreditAvailable && credit.Available)
+                    if (credit.Available)
                     {
-                        if (credit.MinYears < numberOfYears &&
+                        if (credit.MinYears > numberOfYears &&
                             numberOfYears < credit.MaxYears &&
-                            amount > credit.MinAmount)
+                            amount > credit.MinAmount &&
+                            amount < credit.MaxAmount)
                         {
                             a.Amount += amount;
                             a.CreditDebt += amount * credit.Interest;
@@ -87,17 +94,19 @@ namespace Eshoppy.FinanceModule
                         else
                         {
                             Console.Error.Write("Conditions not fulfilled");
+                            return false;
                         }
                     }
                     else
                     {
                         Console.Error.Write("Credit is not available");
+                        return false;
                     }
                 }
             }
             else 
             {
-                Console.Error.Write("Bad client id");
+                throw new NullReferenceException("Bad client id");
             }
             Console.Error.Write("Credit is denied");
             Utils.Utils.SendEmail(client, "Credit is denied");
@@ -114,14 +123,21 @@ namespace Eshoppy.FinanceModule
             }
             else
             {
-                throw new Exception("Bad account id provided");
+                throw new ArgumentNullException("Bad account id provided");
             }
         }
 
         public void CreditPayment(Guid accountId, double amount)
         {
             IAccount account = GetAccountById(accountId);
-            account.CreditDebt -= amount;
+            if(account != null)
+            {
+                account.CreditDebt -= amount;
+            }
+            else
+            {
+                throw new NullReferenceException("Account not found");
+            }
         }
 
          public double Convert(ICurrency currency, double amount)
@@ -144,9 +160,9 @@ namespace Eshoppy.FinanceModule
             return null;
         }
 
-        public ICredit GetCreditById(List<IBank> banks, Guid creditId)
+        public ICredit GetCreditById(Guid creditId)
         {
-            foreach (IBank bank in banks)
+            foreach (IBank bank in bankList.Banks)
             {
                 foreach (ICredit credit in bank.CreditOffer)
                 {
