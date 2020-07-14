@@ -51,6 +51,7 @@
     <Compile Include="FinanceModuleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SalesManagerTests.cs" />
+    <Compile Include="TransactionModuleTests.cs" />
     <Compile Include="UserModuleTests.cs" />
   </ItemGroup>
   <ItemGroup>

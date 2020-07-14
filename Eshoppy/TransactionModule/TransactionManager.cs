@@ -13,8 +13,8 @@ namespace Eshoppy.TransactionModule
 {
     public class TransactionManager : ITransactionManager
     {
-        private IClientManager clientManager;
-        private TransactionList transactionList;
+        private readonly IClientManager clientManager;
+        private readonly TransactionList transactionList;
 
         public TransactionManager(IClientManager clientManager, TransactionList transactionList)
         {
@@ -22,15 +22,12 @@ namespace Eshoppy.TransactionModule
             this.transactionList = transactionList;
         }
 
-        public ITransaction CreateTransaction(Guid buyerId, Guid sellerId, IOffer offer, ITransactionType transactionType, byte evaluation)
+        public ITransaction CreateTransaction(DateTime date, int transactionCategory, Guid buyerId, Guid sellerId, IOffer offer, double transactionPrice, ITransactionType transactionType, byte evaluation)
         {
-            ITransaction transaction = new Transaction();
-            transaction.Id = new Guid();
+            ITransaction transaction = new Transaction(date, transactionCategory, null, null, transactionPrice, null, evaluation, 0);
             IClient buyer = clientManager.GetClientById(buyerId);
             IClient seller = clientManager.GetClientById(sellerId);
 
-            transaction.TransactionDate = new DateTime();
-            transaction.TransactionEvaluation = evaluation;
             transaction.TransactionPrice = offer.OfferPrice + offer.TransportPrice;
             double discount = offer.CheckDiscount(DateTime.Now);
             transaction.Discount = discount;

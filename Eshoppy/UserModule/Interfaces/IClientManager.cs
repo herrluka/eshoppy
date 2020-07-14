@@ -11,7 +11,7 @@ namespace Eshoppy.UserModule.Interfaces
 {
     public interface IClientManager
     {
-        void RegisterUser(String name, String surname, String email, String phone, string adress);
+        void RegisterUser(String name, String surname, String email, String phone, string address);
         void RegisterOrg(int tin, string name, string adress, string phoneNumber, string email);
         void ChangeUserAccount(IUser user, List<IAccount> accounts);
         void ChangeOrgAccount(IOrganization organization, List<IAccount> accounts);

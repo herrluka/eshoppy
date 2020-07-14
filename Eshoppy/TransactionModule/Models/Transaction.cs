@@ -19,5 +19,18 @@ namespace Eshoppy.TransactionModule.Models
         public ITransactionType TransactionType { get; set; }
         public byte TransactionEvaluation { get; set; }
         public double Discount { get; set; }
+
+        public Transaction(DateTime transactionDate, int transactionCategory, IClient buyer, IClient seller, double transactionPrice, ITransactionType transactionType, byte transactionEvaluation, double discount)
+        {
+            Id = Guid.NewGuid();
+            TransactionDate = transactionDate;
+            TransactionCategory = transactionCategory;
+            Buyer = buyer;
+            Seller = seller;
+            TransactionPrice = transactionPrice;
+            TransactionType = transactionType;
+            TransactionEvaluation = transactionEvaluation;
+            Discount = discount;
+        }
     }
 }

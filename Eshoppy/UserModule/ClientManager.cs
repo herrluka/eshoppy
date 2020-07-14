@@ -24,9 +24,9 @@ namespace Eshoppy.UserModule
             this.financeManager = financeManager;
         }
 
-        public void RegisterUser(String name, String surname, String email, String phone, string adress)
+        public void RegisterUser(String name, String surname, String email, String phone, string address)
         {
-            IUser user = new User(name, surname, email, phone, adress);
+            IUser user = new User(name, surname, email, phone, address);
             this.clientList.AddClient(user);
         }
 
@@ -69,7 +69,7 @@ namespace Eshoppy.UserModule
             {
                 foreach (ITransaction transaction in client.Transactions)
                 {
-                    if (DateTime.Compare(transaction.TransactionDate, date) > 0 && transaction.Buyer.Equals(client))
+                    if (DateTime.Compare(transaction.TransactionDate, date) > 0 && transaction.TransactionCategory == 0)
                     {
                         transactions.Add(transaction);
                     }
@@ -80,7 +80,7 @@ namespace Eshoppy.UserModule
             {
                 foreach (ITransaction transaction in client.Transactions)
                 {
-                    if (DateTime.Compare(transaction.TransactionDate, date) > 0 && transaction.Seller.Equals(client))
+                    if (DateTime.Compare(transaction.TransactionDate, date) > 0 && transaction.TransactionCategory == 0)
                     {
                         transactions.Add(transaction);
                     }
@@ -139,6 +139,11 @@ namespace Eshoppy.UserModule
             {
                 throw new Exception("This user has 0 accounts");
             }
+        }
+
+        public ShoppingClient GetShoppingClient()
+        {
+            return this.clientList;
         }
     }
 }

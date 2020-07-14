@@ -204,21 +204,16 @@ namespace EBazaar.UnitTests
         [Test]
         public void AccountPayment_AccountNotExsists_ThrowException()
         {
-
             Assert.Throws<ArgumentNullException>(() => manager.AccountPayment(new Guid("00000000-0000-0030-0000-300000000001"), 200));
         }
 
-        [Test]
-        public void AskCredit_CheckIfUserExist_Unsucessfull()
+        [TestCase("00000000-0000-0000-0000-300000000001", TestName = "Check if user exsists")]
+        [TestCase("00000000-0000-0000-0000-500000000001", TestName = "Check if credit exists")]
+        public void AskCredit_EnitiyNotExist_Exception(String creditId)
         {
-            Assert.Throws<NullReferenceException>(() => manager.AskCredit(new Guid("00000000-0000-0000-0000-300000000001"), 200, new Guid("00000000-0000-0000-0000-300000000001"), 5));
+            Assert.Throws<NullReferenceException>(() => manager.AskCredit(new Guid("00000000-0000-0000-0000-300000000001"), 200, new Guid(creditId), 5));
         }
 
-        [Test]
-        public void AskCredit_AccountCreditAvailableCheck_Unsuccessful()
-        {
-            Assert.Throws<NullReferenceException>(() => manager.AskCredit(new Guid("00000000-0000-0000-0000-300000000001"), 200, new Guid("00000000-0000-0000-0000-500000000001"), 5));
-        }
 
         [Test]
         public void AskCredit_CheckCreditIsAvailable_Unsuccessful()
@@ -230,54 +225,32 @@ namespace EBazaar.UnitTests
             Assert.IsFalse(approved);
         }
 
-        [Test]
-        public void AskCredit_MinYearsBiggerThanRequestedNumberOfYears_Unsuccessful()
+        [TestCase(200, 1, TestName = "Min years are bigger than requested number of years")]
+        [TestCase(200, 7, TestName = "Max years are smaller than requested number of years")]
+        [TestCase(1000, 4, TestName = "Min amount is bigger than requested")]
+        [TestCase(10, 4, TestName = "Max amount is smaller than requested ")]
+        public void AskCredit_ConditionFail_False(double amount, byte years )
         {
             IAccount account = manager.GetAccountById(new Guid("00000000-0000-0000-0000-300000000001"));
             account.CreditAvailable = true;
             ICredit credit = ((FinanceManager)manager).GetCreditById(new Guid("00000000-0000-0000-0000-500000000001"));
             credit.Available = true;
-            var approved = manager.AskCredit(new Guid("00000000-0000-0000-0000-400000000001"), 200, new Guid("00000000-0000-0000-0000-500000000001"), 1);
+            var approved = manager.AskCredit(new Guid("00000000-0000-0000-0000-400000000001"), amount, new Guid("00000000-0000-0000-0000-500000000001"), years);
 
             Assert.IsFalse(approved);
         }
 
+
         [Test]
-        public void AskCredit_MaxYearsSmallerThanRequestedNumberOfYears_Unsuccessful()
+        public void AskCredit_Successful_True()
         {
             IAccount account = manager.GetAccountById(new Guid("00000000-0000-0000-0000-300000000001"));
             account.CreditAvailable = true;
             ICredit credit = ((FinanceManager)manager).GetCreditById(new Guid("00000000-0000-0000-0000-500000000001"));
             credit.Available = true;
-            var approved = manager.AskCredit(new Guid("00000000-0000-0000-0000-400000000001"), 200, new Guid("00000000-0000-0000-0000-500000000001"), 7);
+            var approved = manager.AskCredit(new Guid("00000000-0000-0000-0000-400000000001"), 450, new Guid("00000000-0000-0000-0000-500000000001"), 4);
 
-            Assert.IsFalse(approved);
-        }
-
-        [Test]
-        public void AskCredit_MaxAmountSmallerThanRequestedAmount_Unsuccessful()
-        {
-            IAccount account = manager.GetAccountById(new Guid("00000000-0000-0000-0000-300000000001"));
-            account.CreditAvailable = true;
-            ICredit credit = ((FinanceManager)manager).GetCreditById(new Guid("00000000-0000-0000-0000-500000000001"));
-            credit.Available = true;
-
-            var approved = manager.AskCredit(new Guid("00000000-0000-0000-0000-400000000001"), 1000, new Guid("00000000-0000-0000-0000-500000000001"), 7);
-
-            Assert.IsFalse(approved);
-        }
-
-        [Test]
-        public void AskCredit_MinAmountBiggerThanRequestedAmount_Unsuccessful()
-        {
-            IAccount account = manager.GetAccountById(new Guid("00000000-0000-0000-0000-300000000001"));
-            account.CreditAvailable = true;
-            ICredit credit = ((FinanceManager)manager).GetCreditById(new Guid("00000000-0000-0000-0000-500000000001"));
-            credit.Available = true;
-
-            var approved = manager.AskCredit(new Guid("00000000-0000-0000-0000-400000000001"), 10, new Guid("00000000-0000-0000-0000-500000000001"), 7);
-
-            Assert.IsFalse(approved);
+            Assert.IsTrue(approved);
         }
     }
 }

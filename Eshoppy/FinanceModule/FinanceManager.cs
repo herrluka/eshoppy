@@ -81,14 +81,14 @@ namespace Eshoppy.FinanceModule
                 {
                     if (credit.Available)
                     {
-                        if (credit.MinYears > numberOfYears &&
+                        if (numberOfYears > credit.MinYears &&
                             numberOfYears < credit.MaxYears &&
                             amount > credit.MinAmount &&
                             amount < credit.MaxAmount)
                         {
                             a.Amount += amount;
                             a.CreditDebt += amount * credit.Interest;
-                            Utils.Utils.SendEmail(client, "Credit is approved.");
+                            //Utils.Utils.SendEmail(client, "Credit is approved.");
                             return true;
                         }
                         else
