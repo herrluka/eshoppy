@@ -32,9 +32,9 @@ namespace Eshoppy.FinanceModule
             return new Bank(name, address, email, phone);
         }
 
-        public ICredit CreateCredit(double minAmount, double maxAmount, double interest, int minYears, int maxYears)
+        public ICredit CreateCredit(double minAmount, double maxAmount, double interest, int minYears, int maxYears, bool available)
         {
-            return new Credit(minAmount, maxAmount, interest, minYears, maxYears);
+            return new Credit(minAmount, maxAmount, interest, minYears, maxYears, available);
         }
 
         public IAccount GetAccountById(Guid accountId)

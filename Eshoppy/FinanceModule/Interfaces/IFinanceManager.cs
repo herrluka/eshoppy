@@ -11,7 +11,7 @@ namespace Eshoppy.FinanceModule.Interfaces
     {
         IAccount CreateAccount(DateTime dateValid, IBank bank, double amount);
         IBank CreateBank(string name, string address, string email, string phone);
-        ICredit CreateCredit(double minAmount, double maxAmount, double interest, int minYears, int maxYears);
+        ICredit CreateCredit(double minAmount, double maxAmount, double interest, int minYears, int maxYears, bool available);
         IAccount GetAccountById(Guid accountId);
         bool AskCredit(Guid userId, double amount, Guid creditId, byte numberOfYears);
         void AccountPayment(Guid accountId, double amount);

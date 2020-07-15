@@ -17,7 +17,7 @@ namespace Eshoppy.FinanceModule.Interfaces
         public int MaxYears { get; set; }
         public bool Available { get; set; }
 
-        public Credit(double minAmount, double maxAmount, double interest, int minYears, int maxYears)
+        public Credit(double minAmount, double maxAmount, double interest, int minYears, int maxYears, bool available)
         {
             Id = Guid.NewGuid();
             MinAmount = minAmount;
@@ -25,6 +25,18 @@ namespace Eshoppy.FinanceModule.Interfaces
             Interest = interest;
             MinYears = minYears;
             MaxYears = maxYears;
+            Available = available;
+        }
+
+        public override bool Equals(object obj)
+        {
+            ICredit credit = (Credit)obj;
+                return this.Interest == credit.Interest &&
+                       this.MaxAmount == credit.MaxAmount &&
+                       this.MinAmount == credit.MinAmount &&
+                       this.MinYears == credit.MinYears &&
+                       this.MaxYears == credit.MaxYears &&
+                       this.Available == credit.Available;
         }
     }
 }

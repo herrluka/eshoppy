@@ -62,12 +62,13 @@ namespace Eshoppy.SalesModule.Models
                 discount += 0.05;
             }
 
-            return Math.Round(discount,2);
+            return Math.Round(discount, 2);
         }
 
         public int GetNumberOfProducts()
         {
             return Products.Count;
         }
-    }
+
+    }     
 }

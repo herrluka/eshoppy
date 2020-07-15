@@ -74,6 +74,15 @@ namespace EBazaar.UnitTests
             Assert.AreEqual(discount, 0.17);
         }
 
+        [TestCase(4, TestName = "April")]
+        [TestCase(9, TestName = "Septemper")]
+        public void CheckDiscount_MonthOfDiscountRuleValidation_Unsuccessful(int month)
+        {
+            var offer = new Offer(new List<IProduct>(), new DateTime(DateTime.Now.Year - 1, 1, DateTime.Now.Day), DateTime.Now, new List<ITransport>());
+            var discount = offer.CheckDiscount(new DateTime(2020, month, 15));
+            Assert.AreEqual(discount, 0.12);
+        }
+
         [Test]
         public void CheckDiscount_NumberOfProductsRulePlusOfferOldRule_Successful()
         {

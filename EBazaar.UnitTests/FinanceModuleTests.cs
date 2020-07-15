@@ -32,14 +32,14 @@ namespace EBazaar.UnitTests
             List<IClient> list = new List<IClient>() { client1, client2, client3, client4 };
 
             //Credits
-            ICredit credit1 = new Credit(400, 500, 1.5, 2, 6);
+            ICredit credit1 = new Credit(400, 500, 1.5, 2, 6, true);
             credit1.Id = new Guid("00000000-0000-0000-0000-500000000001");
             credit1.Available = false;
-            ICredit credit2 = new Credit(300, 500, 2.8, 1, 2);
+            ICredit credit2 = new Credit(300, 500, 2.8, 1, 2, false);
             credit2.Id = new Guid("00000000-0000-0000-0000-500000000002");
-            ICredit credit3 = new Credit(200, 600,  1.6, 1, 3);
+            ICredit credit3 = new Credit(200, 600,  1.6, 1, 3, true);
             credit3.Id = new Guid("00000000-0000-0000-0000-500000000003");
-            ICredit credit4 = new Credit(100, 600, 1.7, 5, 6);
+            ICredit credit4 = new Credit(100, 600, 1.7, 5, 6, true);
             credit4.Id = new Guid("00000000-0000-0000-0000-500000000004");
 
             //Banks
@@ -101,15 +101,15 @@ namespace EBazaar.UnitTests
         }
 
 
-        [Test]
-        public void CreateCredit_CheckMinYears_Successful()
+        [TestCase(100, 200, 2.5, 5, 8, true)]
+        [TestCase(500, 300, 1.5, 8, 3, false)]
+        public void CreateCredit_CheckAreEqual_Successful(double minAmount, double maxAmount, double interest, int maxYears, int minYears, bool available)
         {
 
-            var credit = manager.CreateCredit(100, 200, 2.5, 5, 8);
+            var credit = manager.CreateCredit(minAmount, maxAmount, interest, maxYears, minYears, available);
 
-            var expectedMinYears = 5;
-
-            Assert.AreEqual(credit.MinYears, expectedMinYears);
+            ICredit expectedCredit = new Credit(minAmount, maxAmount, interest, maxYears, minYears, available);
+            Assert.That(credit.Equals(expectedCredit));
         }
 
         [Test]
@@ -225,16 +225,18 @@ namespace EBazaar.UnitTests
             Assert.IsFalse(approved);
         }
 
-        [TestCase(200, 1, TestName = "Min years are bigger than requested number of years")]
-        [TestCase(200, 7, TestName = "Max years are smaller than requested number of years")]
-        [TestCase(1000, 4, TestName = "Min amount is bigger than requested")]
-        [TestCase(10, 4, TestName = "Max amount is smaller than requested ")]
-        public void AskCredit_ConditionFail_False(double amount, byte years )
+        [TestCase(200, 1, true, TestName = "Min years are bigger than requested number of years")]
+        [TestCase(200, 7, true, TestName = "Max years are smaller than requested number of years")]
+        [TestCase(1000, 4, true, TestName = "Min amount is bigger than requested")]
+        [TestCase(10, 4, true, TestName = "Max amount is smaller than requested ")]
+        [TestCase(450, 4, false, TestName = "Credit is not availa")]
+        public void AskCredit_ConditionFail_False(double amount, byte years, bool available)
         {
             IAccount account = manager.GetAccountById(new Guid("00000000-0000-0000-0000-300000000001"));
             account.CreditAvailable = true;
             ICredit credit = ((FinanceManager)manager).GetCreditById(new Guid("00000000-0000-0000-0000-500000000001"));
-            credit.Available = true;
+            credit.Available = available;
+
             var approved = manager.AskCredit(new Guid("00000000-0000-0000-0000-400000000001"), amount, new Guid("00000000-0000-0000-0000-500000000001"), years);
 
             Assert.IsFalse(approved);

@@ -34,14 +34,14 @@ namespace EBazaar.UnitTests
             ShoppingClient clientList = new ShoppingClient(list);
 
             //Credits
-            ICredit credit1 = new Credit(400, 500, 1.5, 2, 6);
+            ICredit credit1 = new Credit(400, 500, 1.5, 2, 6, true);
             credit1.Id = new Guid("00000000-0000-0000-0000-500000000001");
             credit1.Available = false;
-            ICredit credit2 = new Credit(300, 500, 2.8, 1, 2);
+            ICredit credit2 = new Credit(300, 500, 2.8, 1, 2, false);
             credit2.Id = new Guid("00000000-0000-0000-0000-500000000002");
-            ICredit credit3 = new Credit(200, 600, 1.6, 1, 3);
+            ICredit credit3 = new Credit(200, 600, 1.6, 1, 3, true);
             credit3.Id = new Guid("00000000-0000-0000-0000-500000000003");
-            ICredit credit4 = new Credit(100, 600, 1.7, 5, 6);
+            ICredit credit4 = new Credit(100, 600, 1.7, 5, 6, true);
             credit4.Id = new Guid("00000000-0000-0000-0000-500000000004");
 
             //Banks
@@ -125,13 +125,23 @@ namespace EBazaar.UnitTests
             Assert.AreEqual(expectedNumber, transactions.Count);
         }
 
-
-        [TestCase()]
-        public void CreateUser_AddFunds_UnSuccessful()
+        [Test]
+        public void GetClientById_ValidateName_Successful()
         {
-            var testClient = userManager.GetClientById(new Guid("00000000-0000-0000-0000-400000000001"));
-            var dolar = new DolarCurrency(1.1);
-            userManager.AddFunds(testClient, 200, dolar);
+            var client = userManager.GetClientById(new Guid("00000000-0000-0000-0000-400000000001"));
+
+            var expectedEmail = "ftn@ns.com";
+
+            Assert.AreEqual(expectedEmail, client.Email);
         }
+
+
+        //[TestCase()]
+        //public void CreateUser_AddFunds_UnSuccessful()
+        //{
+        //    var testClient = userManager.GetClientById(new Guid("00000000-0000-0000-0000-400000000001"));
+        //    var dolar = new DolarCurrency(1.1);
+        //    userManager.AddFunds(testClient, 200, dolar);
+        //}
     }
 }
