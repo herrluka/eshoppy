@@ -90,6 +90,10 @@
     <Compile Include="UserModule\Models\Organization.cs" />
     <Compile Include="UserModule\Models\User.cs" />
     <Compile Include="UserModule\ShoppingClient.cs" />
+    <Compile Include="Utils\Interfaces\IEmailSender.cs" />
+    <Compile Include="Utils\Interfaces\ILogger.cs" />
+    <Compile Include="Utils\Models\EmailSendercs.cs" />
+    <Compile Include="Utils\Models\Logger.cs" />
     <Compile Include="Utils\Utils.cs" />
   </ItemGroup>
   <ItemGroup>

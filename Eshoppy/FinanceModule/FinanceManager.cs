@@ -3,6 +3,7 @@ using Eshoppy.FinanceModule.Models;
 using Eshoppy.UserModule;
 using Eshoppy.UserModule.Interfaces;
 using Eshoppy.Utils;
+using Eshoppy.Utils.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,7 +53,7 @@ namespace Eshoppy.FinanceModule
             return null;
         }
 
-        public bool AskCredit(Guid userId, double amount, Guid creditId, byte numberOfYears)
+        public bool AskCredit(Guid userId, double amount, Guid creditId, byte numberOfYears, IEmailSender emailSender, ILogger logger)
         {
 
             List<IAccount> accounts;
@@ -88,18 +89,20 @@ namespace Eshoppy.FinanceModule
                         {
                             a.Amount += amount;
                             a.CreditDebt += amount * credit.Interest;
-                            //Utils.Utils.SendEmail(client, "Credit is approved.");
+                            emailSender.SendEmail("Credit is approved.", client.Email);
                             return true;
                         }
                         else
                         {
-                            Console.Error.Write("Conditions not fulfilled");
+                            emailSender.SendEmail("Credit is not approved", client.Email);
+                            logger.ErrorLogg("Conditions not fulfilled");
                             return false;
                         }
                     }
                     else
                     {
-                        Console.Error.Write("Credit is not available");
+                        emailSender.SendEmail("Credit is not available", client.Email);
+                        logger.ErrorLogg("Credit is not available");
                         return false;
                     }
                 }
@@ -108,8 +111,8 @@ namespace Eshoppy.FinanceModule
             {
                 throw new NullReferenceException("Bad client id");
             }
-            Console.Error.Write("Credit is denied");
-            Utils.Utils.SendEmail(client, "Credit is denied");
+            logger.ErrorLogg("Credit is denied");
+            emailSender.SendEmail("Credit is denied", client.Email);
             return false;
 
         }

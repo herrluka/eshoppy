@@ -5,6 +5,7 @@ using Eshoppy.TransactionModule;
 using Eshoppy.TransactionModule.Interfaces;
 using Eshoppy.UserModule.Interfaces;
 using Eshoppy.UserModule.Models;
+using Eshoppy.Utils.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -106,7 +107,7 @@ namespace Eshoppy.UserModule
         }
 
 
-        public void AddFunds(IClient client, double amount, ICurrency currency)
+        public void AddFunds(IClient client, double amount, ICurrency currency, IEmailSender emailSender, ILogger logger)
         {
             if (client.Accounts.Count > 0)
             {
@@ -120,15 +121,15 @@ namespace Eshoppy.UserModule
                 {
                     if (amount < 10000)
                     {
-                        Console.Error.Write("Amount cannot be smaller than 10000 for organizations");
-                        throw new Exception("Amount cannot be smaller than 10000 for organizations");
+                        logger.ErrorLogg("Amount cannot be smaller than 10000 for organizations");
+                        return;
                     }
                 }
 
                 if (account.Credit != null)
                 {
                     financeManager.CreditPayment(account.Id, amount);
-                    Utils.Utils.SendEmail(client, "Credit debt is reduced.");
+                    emailSender.SendEmail("Credit debt is reduced.", client.Email);
                 }
                 else
                 {

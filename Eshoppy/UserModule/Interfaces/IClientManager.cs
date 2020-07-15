@@ -1,5 +1,6 @@
 ﻿using Eshoppy.FinanceModule.Interfaces;
 using Eshoppy.TransactionModule.Interfaces;
+using Eshoppy.Utils.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,6 @@ namespace Eshoppy.UserModule.Interfaces
         void ChangeOrgAccount(IOrganization organization, List<IAccount> accounts);
         List<ITransaction> SearchHistory(IClient client, DateTime date, int transactionCategory);
         IClient GetClientById(Guid id);
-        void AddFunds(IClient client, double amount, ICurrency currency);
+        void AddFunds(IClient client, double amount, ICurrency currency, IEmailSender emailSender, ILogger logger);
     }
 }

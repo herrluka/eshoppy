@@ -48,6 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Fakes\FakeClientManager.cs" />
+    <Compile Include="Fakes\FakeEmailSender.cs" />
+    <Compile Include="Fakes\FakeLogger.cs" />
     <Compile Include="FinanceModuleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SalesManagerTests.cs" />

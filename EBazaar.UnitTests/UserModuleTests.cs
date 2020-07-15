@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EBazaar.UnitTests.Fakes;
+using Eshoppy.Utils.Interfaces;
 
 namespace EBazaar.UnitTests
 {
@@ -27,6 +29,7 @@ namespace EBazaar.UnitTests
             IClient client1 = new Organization(111, "FTN", "Adress1", "111-111", "ftn@ns.com");
             client1.Id = new Guid("00000000-0000-0000-0000-400000000001");
             IClient client2 = new Organization(111, "Bambi", "Adress2", "222-222", "bambi@rs.com");
+            client2.Id = new Guid("00000000-0000-0000-0000-400000000002");
             IClient client3 = new User("user1", "suruser1", "user1@ns.com", "333-333", "Adress1");
             IClient client4 = new User("user2", "suruser2", "user2@ns.com", "444-444", "Adress2");
 
@@ -135,13 +138,32 @@ namespace EBazaar.UnitTests
             Assert.AreEqual(expectedEmail, client.Email);
         }
 
+        [Test]
+        public void AddFunds_OrganizationPayedLessThan10000_ErrorLog()
+        {
+            var client = new Organization(33, "Org", "Bulevar", "111-111", "org@org.org");
+            client.Accounts.Add(new Account(DateTime.Now, new Bank("bnk", "addr", "mail@mail.com", "111-111"), 22));
+            var emailSender = new FakeEmailSender();
+            var logger = new FakeLogger();
 
-        //[TestCase()]
-        //public void CreateUser_AddFunds_UnSuccessful()
-        //{
-        //    var testClient = userManager.GetClientById(new Guid("00000000-0000-0000-0000-400000000001"));
-        //    var dolar = new DolarCurrency(1.1);
-        //    userManager.AddFunds(testClient, 200, dolar);
-        //}
+            userManager.AddFunds(client, 200, new DinarCurrency(), emailSender, logger);
+
+            Assert.AreEqual(logger.ErrorMessage, "Amount cannot be smaller than 10000 for organizations");
+        }
+
+        [Test]
+        public void AddFunds_AccountHasCredit_SendEmail()
+        {
+            var client = userManager.GetClientById(new Guid("00000000-0000-0000-0000-400000000002"));
+            var account = new Account(DateTime.Now, new Bank("bnk", "addr", "mail@mail.com", "111-111"), 22);
+            account.Credit = new Credit(200, 500, 0.15, 2, 7, true);
+            client.Accounts.Add(account);
+            var emailSender = new FakeEmailSender();
+            var logger = new FakeLogger();
+
+            userManager.AddFunds(client, 20000, new DinarCurrency(), emailSender, logger);
+
+            Assert.AreEqual(emailSender.Message, "Credit debt is reduced.");
+        }
     }
 }

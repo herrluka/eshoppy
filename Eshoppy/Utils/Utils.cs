@@ -17,22 +17,5 @@ namespace Eshoppy.Utils
             id++;
             return id;
         }
-
-        public static void SendEmail(IClient client, string message)
-        {
-            MailMessage mail = new MailMessage();
-            SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
-
-            mail.From = new MailAddress("luka036test@gmail.com");
-            mail.To.Add(client.Email);
-            mail.Subject = "Test Mail";
-            mail.Body = message;
-
-            SmtpServer.Port = 587;
-            SmtpServer.Credentials = new System.Net.NetworkCredential(Properties.Settings.Default.username, Properties.Settings.Default.password);
-            SmtpServer.EnableSsl = true;
-
-            SmtpServer.Send(mail);
-        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Eshoppy.SalesModule.Interfaces;
+using Eshoppy.Utils.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Eshoppy.TransactionModule.Interfaces
 {
     public interface ITransactionManager
     {
-        ITransaction CreateTransaction(DateTime date, int transactionCategory, Guid buyerId, Guid sellerId, IOffer offer, double transactionPrice, ITransactionType transaction, byte evaluation);
+        ITransaction CreateTransaction(DateTime date, int transactionCategory, Guid buyerId, Guid sellerId, IOffer offer, double transactionPrice, ITransactionType transaction, byte evaluation, IEmailSender emailSender);
 
     }
 }

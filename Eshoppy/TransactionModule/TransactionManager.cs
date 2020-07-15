@@ -3,6 +3,7 @@ using Eshoppy.SalesModule.Interfaces;
 using Eshoppy.TransactionModule.Interfaces;
 using Eshoppy.TransactionModule.Models;
 using Eshoppy.UserModule.Interfaces;
+using Eshoppy.Utils.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace Eshoppy.TransactionModule
             this.transactionList = transactionList;
         }
 
-        public ITransaction CreateTransaction(DateTime date, int transactionCategory, Guid buyerId, Guid sellerId, IOffer offer, double transactionPrice, ITransactionType transactionType, byte evaluation)
+        public ITransaction CreateTransaction(DateTime date, int transactionCategory, Guid buyerId, Guid sellerId, IOffer offer, double transactionPrice, ITransactionType transactionType, byte evaluation, IEmailSender emailSender)
         {
             ITransaction transaction = new Transaction(date, transactionCategory, null, null, transactionPrice, null, evaluation, 0);
             IClient buyer = clientManager.GetClientById(buyerId);
@@ -54,7 +55,7 @@ namespace Eshoppy.TransactionModule
                     buyer.Transactions.Add(transaction);
                     transaction.TransactionCategory = 1;
                     seller.Transactions.Add(transaction);
-                    Utils.Utils.SendEmail(buyer, "Transaction was sucessfull");
+                    emailSender.SendEmail("Transaction was sucessfull", buyer.Email);
                 }
                 else if ( transactionType is InstalmentsTransactionType)
                 {
@@ -65,12 +66,12 @@ namespace Eshoppy.TransactionModule
                     buyer.Transactions.Add(transaction);
                     transaction.TransactionCategory = 1;
                     seller.Transactions.Add(transaction);
-                    Utils.Utils.SendEmail(buyer, "Transaction was sucessfull");
+                    emailSender.SendEmail("Transaction was sucessfull", buyer.Email);
                 }
             }
             else
             {
-                Utils.Utils.SendEmail(buyer, "On your accounts there is not enough money");
+                emailSender.SendEmail("On your accounts there is not enough money", buyer.Email);
                 return null;
             }
 
