@@ -16,25 +16,25 @@ namespace Eshoppy.UserModule
 {
     public class ClientManager : IClientManager
     {
-        private ShoppingClient clientList;
-        private FinanceManager financeManager;
+        public ShoppingClient ClientList { get; set;}
+        public IFinanceManager FinanceManager { get; set; }
 
-        public ClientManager(ShoppingClient clientList, FinanceManager financeManager)
+        public ClientManager(ShoppingClient clientList, IFinanceManager financeManager)
         {
-            this.clientList = clientList;
-            this.financeManager = financeManager;
+            this.ClientList = clientList;
+            this.FinanceManager = financeManager;
         }
 
         public void RegisterUser(String name, String surname, String email, String phone, string address)
         {
             IUser user = new User(name, surname, email, phone, address);
-            this.clientList.AddClient(user);
+            this.ClientList.AddClient(user);
         }
 
         public void RegisterOrg(int tin, string name, string adress, string phoneNumber, string email)
         {
             IOrganization organization = new Organization(tin, name, adress, phoneNumber, email);
-            this.clientList.AddClient(organization);
+            this.ClientList.AddClient(organization);
         }
 
         public void ChangeUserAccount(IUser user, List<IAccount> accounts)
@@ -96,7 +96,7 @@ namespace Eshoppy.UserModule
 
         public IClient GetClientById(Guid id)
         {
-            foreach (IClient client in this.clientList.Clients)
+            foreach (IClient client in this.ClientList.Clients)
             {
                 if (client.Id.Equals(id))
                 {
@@ -114,7 +114,7 @@ namespace Eshoppy.UserModule
                 IAccount account = client.Accounts[0];
                 if (!(currency is DinarCurrency))
                 {
-                    amount *= currency.MultiplyFactor;
+                    amount = FinanceManager.Convert(currency, amount);
                 }
 
                 if (client is IOrganization)
@@ -128,12 +128,12 @@ namespace Eshoppy.UserModule
 
                 if (account.Credit != null)
                 {
-                    financeManager.CreditPayment(account.Id, amount);
+                    FinanceManager.CreditPayment(account.Id, amount);
                     emailSender.SendEmail("Credit debt is reduced.", client.Email);
                 }
                 else
                 {
-                    financeManager.AccountPayment(account.Id, amount);
+                    FinanceManager.AccountPayment(account.Id, amount);
                 }
             }
             else
@@ -144,7 +144,7 @@ namespace Eshoppy.UserModule
 
         public ShoppingClient GetShoppingClient()
         {
-            return this.clientList;
+            return this.ClientList;
         }
     }
 }

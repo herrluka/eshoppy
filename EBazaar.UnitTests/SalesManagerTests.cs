@@ -1,6 +1,7 @@
 ﻿using Eshoppy.SalesModule;
 using Eshoppy.SalesModule.Interfaces;
 using Eshoppy.SalesModule.Models;
+using NSubstitute;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -109,6 +110,7 @@ namespace EBazaar.UnitTests
 
             Assert.AreEqual(offer.OfferPrice, expected_price);
         }
+
 
         [Test]
         public void GetOffersByTransportID_NumberOfOffers_Successful()

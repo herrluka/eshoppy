@@ -119,6 +119,11 @@ namespace Eshoppy.FinanceModule
 
         public void AccountPayment(Guid accountId, double amount)
         {
+            if (amount <= 0)
+            {
+                throw new ArgumentOutOfRangeException("Amount cannot be smaller or equal than 0");
+            }
+
             IAccount account = GetAccountById(accountId);
             if (account != null)
             {
@@ -132,6 +137,11 @@ namespace Eshoppy.FinanceModule
 
         public void CreditPayment(Guid accountId, double amount)
         {
+            if (amount <= 0)
+            {
+                throw new ArgumentOutOfRangeException("Amount cannot be smaller or equal than 0");
+            }
+
             IAccount account = GetAccountById(accountId);
             if(account != null)
             {

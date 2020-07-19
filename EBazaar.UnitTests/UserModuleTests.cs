@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EBazaar.UnitTests.Fakes;
 using Eshoppy.Utils.Interfaces;
+using NSubstitute;
 
 namespace EBazaar.UnitTests
 {
@@ -165,5 +166,6 @@ namespace EBazaar.UnitTests
 
             Assert.AreEqual(emailSender.Message, "Credit debt is reduced.");
         }
+
     }
 }

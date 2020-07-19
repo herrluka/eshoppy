@@ -12,6 +12,8 @@ namespace Eshoppy.UserModule.Interfaces
 {
     public interface IClientManager
     {
+        ShoppingClient ClientList { get; set; }
+        IFinanceManager FinanceManager { get; set; }
         void RegisterUser(String name, String surname, String email, String phone, string address);
         void RegisterOrg(int tin, string name, string adress, string phoneNumber, string email);
         void ChangeUserAccount(IUser user, List<IAccount> accounts);

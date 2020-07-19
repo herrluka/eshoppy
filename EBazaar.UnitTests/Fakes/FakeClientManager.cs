@@ -1,6 +1,7 @@
 ﻿using Eshoppy.FinanceModule.Interfaces;
 using Eshoppy.FinanceModule.Models;
 using Eshoppy.TransactionModule.Interfaces;
+using Eshoppy.UserModule;
 using Eshoppy.UserModule.Interfaces;
 using Eshoppy.UserModule.Models;
 using Eshoppy.Utils.Interfaces;
@@ -14,6 +15,9 @@ namespace EBazaar.UnitTests.Fakes
 {
     public class FakeClientManager : IClientManager
     {
+        public ShoppingClient ClientList { get; set; }
+        public IFinanceManager FinanceManager { get; set; }
+
         public void AddFunds(IClient client, double amount, ICurrency currency, IEmailSender emailSender, ILogger logger)
         {
             throw new NotImplementedException();
