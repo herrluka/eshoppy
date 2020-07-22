@@ -11,6 +11,7 @@ namespace Eshoppy.UserModule.Interfaces
     public interface IClient
     {
         Guid Id { get; set; }
+        String Name { get; set; }
         List<IAccount> Accounts { get; set; }
         String Email { get; set; }
         String PhoneNumber { get; set; }

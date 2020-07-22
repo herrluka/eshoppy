@@ -9,7 +9,6 @@ namespace Eshoppy.UserModule.Interfaces
     public interface IOrganization : IClient
     {
         int Tin { get; set; }
-        String Name { get; set; }
         double AverageTransactionRate { get; set; }
     }
 }

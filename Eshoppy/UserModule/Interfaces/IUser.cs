@@ -9,7 +9,6 @@ namespace Eshoppy.UserModule.Interfaces
 {
     public interface IUser : IClient
     {
-        String Name { get; set; }
         String Surname { get; set; }
         IAccount GetAccountByAccountNumber(int accountNumber);
     }

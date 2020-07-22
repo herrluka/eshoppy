@@ -21,6 +21,7 @@ namespace Eshoppy.SalesModule
         {
             IOffer offer = new Offer(products, dateCreated, dateValid, transports);
             offer.OfferPrice = offer.GetPriceAsSumOfProducts(DateTime.Now);
+            offers.Offers.Add(offer);
             return offer;
         }
 

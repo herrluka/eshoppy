@@ -14,13 +14,13 @@ namespace Eshoppy.FinanceModule
 {
     public class FinanceManager : IFinanceManager
     {
-        private ShoppingClient clientList;
-        private BankList bankList;
+        public ShoppingClient ClientList { get; set; }
+        public BankList BankList { get; set; }
 
         public FinanceManager(ShoppingClient clientList, BankList bankList)
         {
-            this.clientList = clientList;
-            this.bankList = bankList;
+            this.ClientList = clientList;
+            this.BankList = bankList;
         }
 
         public IAccount CreateAccount(DateTime dateValid, IBank bank, double amount)
@@ -30,7 +30,9 @@ namespace Eshoppy.FinanceModule
 
         public IBank CreateBank(string name, string address, string email, string phone)
         {
-            return new Bank(name, address, email, phone);
+            IBank bank = new Bank(name, address, email, phone);
+            BankList.Banks.Add(bank);
+            return bank;
         }
 
         public ICredit CreateCredit(double minAmount, double maxAmount, double interest, int minYears, int maxYears, bool available)
@@ -40,7 +42,7 @@ namespace Eshoppy.FinanceModule
 
         public IAccount GetAccountById(Guid accountId)
         {
-            foreach (IClient client in clientList.Clients)
+            foreach (IClient client in ClientList.Clients)
             {
                 foreach (IAccount account in client.Accounts)
                 {
@@ -59,7 +61,7 @@ namespace Eshoppy.FinanceModule
             List<IAccount> accounts;
             IClient client = null;
 
-            foreach (IClient c in this.clientList.Clients)
+            foreach (IClient c in this.ClientList.Clients)
             {
                 if (c.Id.Equals(userId))
                 {
@@ -160,7 +162,7 @@ namespace Eshoppy.FinanceModule
 
         public double? CheckBalance(Guid accountID)
         {
-            foreach (IClient client in clientList.Clients)
+            foreach (IClient client in ClientList.Clients)
             {
                 foreach (IAccount account in client.Accounts)
                 {
@@ -175,7 +177,7 @@ namespace Eshoppy.FinanceModule
 
         public ICredit GetCreditById(Guid creditId)
         {
-            foreach (IBank bank in bankList.Banks)
+            foreach (IBank bank in BankList.Banks)
             {
                 foreach (ICredit credit in bank.CreditOffer)
                 {

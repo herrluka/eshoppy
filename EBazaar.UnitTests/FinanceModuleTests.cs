@@ -87,7 +87,7 @@ namespace EBazaar.UnitTests
 
             var expectedDate = now;
 
-            Assert.AreEqual(account.DateValid, expectedDate);
+            Assert.AreEqual(expectedDate, account.DateValid);
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace EBazaar.UnitTests
 
             var expectedAddress = "address";
 
-            Assert.AreEqual(bank.Address, expectedAddress);
+            Assert.AreEqual(expectedAddress, bank.Address);
         }
 
 
@@ -216,17 +216,6 @@ namespace EBazaar.UnitTests
             var logger = new FakeLogger();
             Assert.Throws<NullReferenceException>(() => manager.AskCredit(new Guid("00000000-0000-0000-0000-300000000001"), 200, new Guid(creditId), 5, emailSender, logger));
         }
-
-
-        //[Test]
-        //public void AskCredit_CheckCreditIsAvailable_Unsuccessful()
-        //{
-        //    IAccount account = manager.GetAccountById(new Guid("00000000-0000-0000-0000-300000000001"));
-        //    account.CreditAvailable = true;
-        //    var approved = manager.AskCredit(new Guid("00000000-0000-0000-0000-400000000001"), 200, new Guid("00000000-0000-0000-0000-500000000001"), 5);
-
-        //    Assert.IsFalse(approved);
-        //}
 
         [TestCase(200, 1, true, TestName = "Min years are bigger than requested number of years")]
         [TestCase(200, 7, true, TestName = "Max years are smaller than requested number of years")]

@@ -149,7 +149,9 @@ namespace EBazaar.UnitTests
 
             userManager.AddFunds(client, 200, new DinarCurrency(), emailSender, logger);
 
-            Assert.AreEqual(logger.ErrorMessage, "Amount cannot be smaller than 10000 for organizations");
+            var expectedMessage = "Amount cannot be smaller than 10000 for organizations";
+
+            Assert.AreEqual(expectedMessage, logger.ErrorMessage);
         }
 
         [Test]
@@ -164,7 +166,9 @@ namespace EBazaar.UnitTests
 
             userManager.AddFunds(client, 20000, new DinarCurrency(), emailSender, logger);
 
-            Assert.AreEqual(emailSender.Message, "Credit debt is reduced.");
+            var expectedMessage = "Credit debt is reduced.";
+
+            Assert.AreEqual(expectedMessage, emailSender.Message);
         }
 
     }

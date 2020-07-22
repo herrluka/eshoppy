@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Eshoppy.Utils.Models
 {
-    public class EmailSendercs : IEmailSender
+    public class EmailSender : IEmailSender
     {
         public void SendEmail(string message, string email)
         {

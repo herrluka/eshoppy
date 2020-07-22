@@ -14,20 +14,20 @@ namespace Eshoppy.TransactionModule
 {
     public class TransactionManager : ITransactionManager
     {
-        private readonly IClientManager clientManager;
-        private readonly TransactionList transactionList;
+        public IClientManager ClientManager { get; set; }
+        private TransactionList TransactionList { get; set; }
 
         public TransactionManager(IClientManager clientManager, TransactionList transactionList)
         {
-            this.clientManager = clientManager;
-            this.transactionList = transactionList;
+            this.ClientManager = clientManager;
+            this.TransactionList = transactionList;
         }
 
         public ITransaction CreateTransaction(DateTime date, int transactionCategory, Guid buyerId, Guid sellerId, IOffer offer, double transactionPrice, ITransactionType transactionType, byte evaluation, IEmailSender emailSender)
         {
             ITransaction transaction = new Transaction(date, transactionCategory, null, null, transactionPrice, null, evaluation, 0);
-            IClient buyer = clientManager.GetClientById(buyerId);
-            IClient seller = clientManager.GetClientById(sellerId);
+            transaction.Buyer = ClientManager.GetClientById(buyerId);
+            transaction.Seller = ClientManager.GetClientById(sellerId);
 
             transaction.TransactionPrice = offer.OfferPrice + offer.TransportPrice;
             double discount = offer.CheckDiscount(DateTime.Now);
@@ -35,7 +35,7 @@ namespace Eshoppy.TransactionModule
 
             IAccount accountWithEnoughMoney = null;
 
-            foreach (IAccount account in buyer.Accounts)
+            foreach (IAccount account in transaction.Buyer.Accounts)
             {
                 if (account.Amount > transaction.TransactionPrice)
                 {
@@ -49,29 +49,29 @@ namespace Eshoppy.TransactionModule
                 if (transactionType is WithoutInstalmentsTransactionType)
                 {
                     accountWithEnoughMoney.Amount -= transaction.TransactionPrice * (1 - transaction.Discount);
-                    buyer.Accounts[0].Amount += transaction.TransactionPrice * (1 - transaction.Discount);
-                    transactionList.Transactions.Add(transaction);
+                    transaction.Buyer.Accounts[0].Amount += transaction.TransactionPrice * (1 - transaction.Discount);
+                    TransactionList.AddTransaction(transaction);
                     transaction.TransactionCategory = 0;
-                    buyer.Transactions.Add(transaction);
+                    transaction.Buyer.Transactions.Add(transaction);
                     transaction.TransactionCategory = 1;
-                    seller.Transactions.Add(transaction);
-                    emailSender.SendEmail("Transaction was sucessfull", buyer.Email);
+                    transaction.Seller.Transactions.Add(transaction);
+                    emailSender.SendEmail("Transaction was sucessfull", transaction.Buyer.Email);
                 }
                 else if ( transactionType is InstalmentsTransactionType)
                 {
                     accountWithEnoughMoney.Amount -= ((InstalmentsTransactionType)transactionType).InstalmentPrice * transaction.Discount;
-                    buyer.Accounts[0].Amount += ((InstalmentsTransactionType)transactionType).InstalmentPrice * transaction.Discount;
-                    transactionList.Transactions.Add(transaction);
+                    transaction.Buyer.Accounts[0].Amount += ((InstalmentsTransactionType)transactionType).InstalmentPrice * transaction.Discount;
+                    TransactionList.AddTransaction(transaction);
                     transaction.TransactionCategory = 0;
-                    buyer.Transactions.Add(transaction);
+                    transaction.Buyer.Transactions.Add(transaction);
                     transaction.TransactionCategory = 1;
-                    seller.Transactions.Add(transaction);
-                    emailSender.SendEmail("Transaction was sucessfull", buyer.Email);
+                    transaction.Seller.Transactions.Add(transaction);
+                    emailSender.SendEmail("Transaction was sucessfull", transaction.Buyer.Email);
                 }
             }
             else
             {
-                emailSender.SendEmail("On your accounts there is not enough money", buyer.Email);
+                emailSender.SendEmail("On your accounts there is not enough money", transaction.Buyer.Email);
                 return null;
             }
 

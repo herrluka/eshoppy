@@ -63,7 +63,9 @@ namespace EBazaar.UnitTests
         {
             var offer = new Offer(new List<IProduct>(), DateTime.Now.AddDays(-61), DateTime.Now, new List<ITransport>());
             var discount = offer.CheckDiscount(DateTime.Now);
-            Assert.AreEqual(discount, 0.12);
+
+            var expectedDiscount = 0.12;
+            Assert.AreEqual(expectedDiscount, discount);
         }
 
         [TestCase(1, TestName = "January")]
@@ -72,7 +74,9 @@ namespace EBazaar.UnitTests
         {
             var offer = new Offer(new List<IProduct>(), new DateTime(DateTime.Now.Year - 1, 1, DateTime.Now.Day), DateTime.Now, new List<ITransport>());
             var discount = offer.CheckDiscount(new DateTime(2020, month, 15));
-            Assert.AreEqual(discount, 0.17);
+
+            var expectedDiscount = 0.17;
+            Assert.AreEqual(expectedDiscount, discount);
         }
 
         [TestCase(4, TestName = "April")]
@@ -81,7 +85,9 @@ namespace EBazaar.UnitTests
         {
             var offer = new Offer(new List<IProduct>(), new DateTime(DateTime.Now.Year - 1, 1, DateTime.Now.Day), DateTime.Now, new List<ITransport>());
             var discount = offer.CheckDiscount(new DateTime(2020, month, 15));
-            Assert.AreEqual(discount, 0.12);
+
+            var expectedDiscount = 0.12;
+            Assert.AreEqual(expectedDiscount, discount);
         }
 
         [Test]
@@ -93,7 +99,10 @@ namespace EBazaar.UnitTests
             var product4 = new Product("Product4", 122.5, 23);
             var offer = new Offer(new List<IProduct>() { product1, product2, product3, product4 }, new DateTime(DateTime.Now.Year - 1, 1, DateTime.Now.Day), DateTime.Now, new List<ITransport>());
             var discount = offer.CheckDiscount(new DateTime(2020, 2, 15));
-            Assert.AreEqual(discount, 0.17);
+
+            var expectedDiscount = 0.17;
+
+            Assert.AreEqual(expectedDiscount, discount);
         }
 
         [Test]
@@ -108,7 +117,7 @@ namespace EBazaar.UnitTests
 
             var expected_price = (product1.Price + product2.Price + product3.Price + product4.Price) * (1 - 0.22);
 
-            Assert.AreEqual(offer.OfferPrice, expected_price);
+            Assert.AreEqual(expected_price, offer.OfferPrice);
         }
 
 
@@ -119,7 +128,7 @@ namespace EBazaar.UnitTests
 
             var expectedNumber = 2;
 
-            Assert.AreEqual(offersNumber, expectedNumber);
+            Assert.AreEqual(expectedNumber, offersNumber);
         }
 
         [Test]
@@ -129,7 +138,7 @@ namespace EBazaar.UnitTests
 
             var expectedNumber = 2;
 
-            Assert.AreEqual(offersNumber, expectedNumber);
+            Assert.AreEqual(expectedNumber, offersNumber);
         }
 
         [Test]
@@ -137,9 +146,9 @@ namespace EBazaar.UnitTests
         {
             var offer = manager.GetLowestOffer();
 
-            var id = new Guid("00000000-0000-0000-0000-300000000003");
+            var expectedId = new Guid("00000000-0000-0000-0000-300000000003");
 
-            Assert.AreEqual(offer.Id, id);
+            Assert.AreEqual(expectedId ,offer.Id);
         }
 
         [Test]
@@ -169,7 +178,7 @@ namespace EBazaar.UnitTests
 
             var expectedNumberOfProducts = 5;
 
-            Assert.AreEqual(offer.Products.Count, expectedNumberOfProducts);
+            Assert.AreEqual(expectedNumberOfProducts, offer.Products.Count);
         }
 
         [Test]
@@ -188,7 +197,7 @@ namespace EBazaar.UnitTests
 
             var expectedNumberOfProducts = 500;
 
-            Assert.AreEqual(offer.OfferPrice, expectedNumberOfProducts);
+            Assert.AreEqual(expectedNumberOfProducts, offer.OfferPrice);
         }
 
         [Test]
@@ -198,7 +207,9 @@ namespace EBazaar.UnitTests
             var now = DateTime.Now;
             manager.UpdateOffer(offer, dateValid: now);
 
-            Assert.AreEqual(now, offer.DateValid);
+            var expectedDate = now;
+
+            Assert.AreEqual(expectedDate, offer.DateValid);
         }
     }
 }

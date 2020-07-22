@@ -59,7 +59,9 @@ namespace EBazaar.UnitTests
             var emailSender = new FakeEmailSender();
             transactionManager.CreateTransaction(DateTime.Now, 1, Guid.NewGuid(), Guid.NewGuid(), offer, 500, new WithoutInstalmentsTransactionType(), 3, emailSender);
 
-            Assert.AreEqual(emailSender.Message, "On your accounts there is not enough money");
+            var expectedMessage = "On your accounts there is not enough money";
+
+            Assert.AreEqual(expectedMessage, emailSender.Message);
         }
         
 
@@ -71,7 +73,9 @@ namespace EBazaar.UnitTests
             var emailSender = new FakeEmailSender();
             transactionManager.CreateTransaction(DateTime.Now, 1, Guid.NewGuid(), Guid.NewGuid(), offer, 500, new WithoutInstalmentsTransactionType(), 3, emailSender);
 
-            Assert.AreEqual(emailSender.Message, "Transaction was sucessfull");
+            var expectedMessage = "Transaction was sucessfull";
+
+            Assert.AreEqual(expectedMessage, emailSender.Message);
         }
 
         [Test]
@@ -82,7 +86,9 @@ namespace EBazaar.UnitTests
             var emailSender = new FakeEmailSender();
             transactionManager.CreateTransaction(DateTime.Now, 1, Guid.NewGuid(), Guid.NewGuid(), offer, 500, new InstalmentsTransactionType(), 3, emailSender);
 
-            Assert.AreEqual(emailSender.Message, "Transaction was sucessfull");
+            var expectedMessage = "Transaction was sucessfull";
+
+            Assert.AreEqual(expectedMessage, emailSender.Message);
         }
     }
 }

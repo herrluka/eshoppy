@@ -31,9 +31,5 @@ namespace Eshoppy.FinanceModule.Models
             Credit = null;
         }
 
-        public double CheckBalance()
-        {
-            return this.Amount;
-        }
     }
 }
