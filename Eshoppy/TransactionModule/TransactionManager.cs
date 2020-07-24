@@ -50,22 +50,22 @@ namespace Eshoppy.TransactionModule
                 {
                     accountWithEnoughMoney.Amount -= transaction.TransactionPrice * (1 - transaction.Discount);
                     transaction.Buyer.Accounts[0].Amount += transaction.TransactionPrice * (1 - transaction.Discount);
-                    TransactionList.AddTransaction(transaction);
                     transaction.TransactionCategory = 0;
                     transaction.Buyer.Transactions.Add(transaction);
                     transaction.TransactionCategory = 1;
                     transaction.Seller.Transactions.Add(transaction);
+                    TransactionList.AddTransaction(transaction);
                     emailSender.SendEmail("Transaction was sucessfull", transaction.Buyer.Email);
                 }
                 else if ( transactionType is InstalmentsTransactionType)
                 {
                     accountWithEnoughMoney.Amount -= ((InstalmentsTransactionType)transactionType).InstalmentPrice * transaction.Discount;
                     transaction.Buyer.Accounts[0].Amount += ((InstalmentsTransactionType)transactionType).InstalmentPrice * transaction.Discount;
-                    TransactionList.AddTransaction(transaction);
                     transaction.TransactionCategory = 0;
                     transaction.Buyer.Transactions.Add(transaction);
                     transaction.TransactionCategory = 1;
                     transaction.Seller.Transactions.Add(transaction);
+                    TransactionList.AddTransaction(transaction);
                     emailSender.SendEmail("Transaction was sucessfull", transaction.Buyer.Email);
                 }
             }

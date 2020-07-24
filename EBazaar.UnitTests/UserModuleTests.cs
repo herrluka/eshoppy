@@ -32,6 +32,7 @@ namespace EBazaar.UnitTests
             IClient client2 = new Organization(111, "Bambi", "Adress2", "222-222", "bambi@rs.com");
             client2.Id = new Guid("00000000-0000-0000-0000-400000000002");
             IClient client3 = new User("user1", "suruser1", "user1@ns.com", "333-333", "Adress1");
+            client3.Id = new Guid("00000000-0000-0000-0000-400000000003");
             IClient client4 = new User("user2", "suruser2", "user2@ns.com", "444-444", "Adress2");
 
             List<IClient> list = new List<IClient>() { client1, client2, client3, client4 };
@@ -136,6 +137,32 @@ namespace EBazaar.UnitTests
             var expectedEmail = "ftn@ns.com";
 
             Assert.AreEqual(expectedEmail, client.Email);
+        }
+
+        [Test]
+        public void ChangeUserAccount_CheckAccountNumber_Successful()
+        {
+            var user = (IUser)userManager.GetClientById(new Guid("00000000-0000-0000-0000-400000000003"));
+            var account1 = new Account(DateTime.Now, null, 200);
+            account1.AccountNumber = 55;
+            account1.Id = new Guid("00000000-0000-0000-0000-900000000001");
+            var account2 = new Account(DateTime.Now, null, 300);
+            account2.AccountNumber = 77;
+            account2.Id = new Guid("00000000-0000-0000-0000-900000000002");
+            user.Accounts = new List<IAccount>() { account1, account2 };
+
+            var account3 = new Account(DateTime.Now, null, 200);
+            account3.Id = new Guid("00000000-0000-0000-0000-900000000001");
+            account3.AccountNumber = 11;
+            var account4 = new Account(DateTime.Now, null, 100);
+            account4.Id = new Guid("00000000-0000-0000-0000-900000000002");
+            account4.AccountNumber = 23;
+
+            userManager.ChangeUserAccount(user, new List<IAccount>() { account3, account4 });
+
+            var expectedAccountId = 11;
+            Assert.AreEqual(expectedAccountId, user.Accounts[0].AccountNumber);
+
         }
 
         [Test]

@@ -115,25 +115,14 @@ namespace EBazaar.UnitTests
         }
 
 
-        [TestCase(100, 200, 2.5, 5, 8, true)]
-        [TestCase(500, 300, 1.5, 8, 3, false)]
-        public void CreateCredit_CheckAreEqual_Successful(double minAmount, double maxAmount, double interest, int maxYears, int minYears, bool available)
-        {
-
-            var credit = manager.CreateCredit(minAmount, maxAmount, interest, maxYears, minYears, available);
-
-            ICredit expectedCredit = new Credit(minAmount, maxAmount, interest, maxYears, minYears, available);
-            Assert.That(credit.Equals(expectedCredit));
-        }
-
         [Test]
-        public void GetId_CheckValue_Successful()
+        public void CreateCredit_CheckAreEqual_Successful()
         {
 
-            var id = Utils.getId();
-            var nextId = Utils.getId();
+            var credit = manager.CreateCredit(100, 200, 2.5, 5, 8, true);
 
-            Assert.AreEqual(id + 1, nextId);
+            ICredit expectedCredit = new Credit(100, 200, 2.5, 5, 8, true);
+            Assert.That(credit.Equals(expectedCredit));
         }
 
 
@@ -159,14 +148,14 @@ namespace EBazaar.UnitTests
             Assert.IsNull(account);
         }
 
-        [Test]
-        public void CheckBallance_ValidateAmount_Successful()
+        [TestCase("00000000-0000-0000-0000-300000000001", 100, TestName = "Account 1")]
+        [TestCase("00000000-0000-0000-0000-300000000002", 200, TestName = "Account 2")]
+        public void CheckBallance_ValidateAmount_Successful(String id, double expectedAmount)
         {
-            var guid = new Guid("00000000-0000-0000-0000-300000000001");
+            var guid = new Guid(id);
 
             var amount = manager.CheckBalance(guid);
 
-            var expectedAmount = 100;
             Assert.AreEqual(expectedAmount, amount);
         }
 

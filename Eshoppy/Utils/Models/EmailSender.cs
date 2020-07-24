@@ -15,7 +15,7 @@ namespace Eshoppy.Utils.Models
             MailMessage mail = new MailMessage();
             SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
 
-            mail.From = new MailAddress("luka036test@gmail.com");
+            mail.From = new MailAddress(Properties.Settings.Default.username);
             mail.To.Add(email);
             mail.Subject = "Test Mail";
             mail.Body = message;
