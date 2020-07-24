@@ -16,10 +16,10 @@ using System.Threading.Tasks;
 namespace EBazaar.UnitTests
 {
     [TestFixture]
-    public class UserModuleNSubstituteTests
+    public class ClientModuleNSubstituteTests
     {
 
-        IClientManager clientManager;
+        ShoppingClient clientList;
 
         [SetUp]
         public void Init()
@@ -33,33 +33,16 @@ namespace EBazaar.UnitTests
             IClient client4 = new User("user2", "suruser2", "user2@ns.com", "444-444", "Adress2");
 
             List<IClient> list = new List<IClient>() { client1, client2, client3, client4 };
-            ShoppingClient clientList = new ShoppingClient(list);
-
-            var financeManager = Substitute.For<IFinanceManager>();
-            clientManager = new ClientManager(clientList, financeManager);
-        }
-
-        [Test]
-        public void AddFunds_CreditPaymentReceivedCall_Successful()
-        {
-
-            var client = clientManager.GetClientById(new Guid("00000000-0000-0000-0000-400000000002"));
-            var account = new Account(DateTime.Now, new Bank("bnk", "addr", "mail@mail.com", "111-111"), 22);
-            account.Credit = new Credit(200, 500, 0.15, 2, 7, true);
-            client.Accounts.Add(account);
-            var logger = new FakeLogger();
-            var emailSender = new FakeEmailSender();
-
-            clientManager.AddFunds(client, 20000, new DinarCurrency(), emailSender, logger);
-
-            clientManager.FinanceManager.Received().CreditPayment(account.Id, 20000);
+            clientList = new ShoppingClient(list);
 
         }
+
 
         [Test]
         public void AddFunds_ConvertReceivedCall_Successful()
         {
-
+            var financeManager = Substitute.For<IFinanceManager>();
+            var clientManager = new ClientManager(clientList, financeManager);
             var client = clientManager.GetClientById(new Guid("00000000-0000-0000-0000-400000000002"));
             var account = new Account(DateTime.Now, new Bank("bnk", "addr", "mail@mail.com", "111-111"), 22);
             account.Credit = new Credit(200, 500, 0.15, 2, 7, true);
@@ -74,18 +57,46 @@ namespace EBazaar.UnitTests
 
         }
 
+
         [Test]
-        public void AddFunds_AccountPaymentReceivedCall_Successful()
+        public void AccountPayment_AmountLessOrEqualZero_ThrowException()
         {
-            var client = new Organization(33, "Org", "Bulevar", "111-111", "org@org.org");
+            var financeManager = Substitute.For<IFinanceManager>();
+            financeManager
+               .When(x => x.AccountPayment(Arg.Any<Guid>(),
+                                           Arg.Is<double>(y => y <= 0)))
+               .Do(x => { throw new ArgumentOutOfRangeException("Amount cannot be smaller or equal than 0"); });
+            var clientManager = new ClientManager(clientList, financeManager);
+
+            var client = new User("User", "SurUser", "Bulevar", "111-111", "org@org.org");
             var account = new Account(DateTime.Now, new Bank("bnk", "addr", "mail@mail.com", "111-111"), 22);
             client.Accounts.Add(account);
             var logger = new FakeLogger();
             var emailSender = new FakeEmailSender();
 
-            clientManager.AddFunds(client, 20000, new DinarCurrency(), emailSender, logger);
+            Assert.Throws<ArgumentOutOfRangeException>(() => clientManager.AddFunds(client, 0, new DinarCurrency(), emailSender, logger));
 
-            clientManager.FinanceManager.Received().AccountPayment(account.Id, 20000);
+        }
+
+        [Test]
+        public void CreditPayment_AmountLessOrEqualZero_ThrowException()
+        {
+            var financeManager = Substitute.For<IFinanceManager>();
+            financeManager
+               .When(x => x.CreditPayment(Arg.Any<Guid>(),
+                                           Arg.Is<double>(y => y <= 0)))
+               .Do(x => { throw new ArgumentOutOfRangeException("Amount cannot be smaller or equal than 0"); });
+            var clientManager = new ClientManager(clientList, financeManager);
+
+            var client = new User("User", "SurUser", "Bulevar", "111-111", "org@org.org");
+            var account = new Account(DateTime.Now, new Bank("bnk", "addr", "mail@mail.com", "111-111"), 22);
+            account.Credit = new Credit(100, 200, 0.05, 2, 4, true); 
+            client.Accounts.Add(account);
+            var logger = new FakeLogger();
+            var emailSender = new FakeEmailSender();
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => clientManager.AddFunds(client, 0, new DinarCurrency(), emailSender, logger));
+
         }
     }
 }

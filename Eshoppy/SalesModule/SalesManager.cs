@@ -10,18 +10,18 @@ namespace Eshoppy.SalesModule
 {
     public class SalesManager : ISalesManager
     {
-        private ListOffers offers;
+        public ListOffers Offers { get; set; }
 
         public SalesManager(ListOffers offers)
         {
-            this.offers = offers;
+            this.Offers = offers;
         }
 
         public IOffer CreateOffer(List<IProduct> products, DateTime dateCreated, DateTime dateValid, List<ITransport> transports)
         {
             IOffer offer = new Offer(products, dateCreated, dateValid, transports);
             offer.OfferPrice = offer.GetPriceAsSumOfProducts(DateTime.Now);
-            offers.Offers.Add(offer);
+            Offers.Offers.Add(offer);
             return offer;
         }
 
@@ -32,14 +32,14 @@ namespace Eshoppy.SalesModule
 
         public IOffer GetLowestOffer()
         {
-            return offers.Offers.OrderBy(o => o.OfferPrice).First();
+            return Offers.Offers.OrderBy(o => o.OfferPrice).First();
         }
 
         public List<IOffer> GetOffersByProduct(Guid productId)
         {
             List<IOffer> returnOffers = new List<IOffer>();
 
-            foreach (IOffer offer in offers.Offers)
+            foreach (IOffer offer in Offers.Offers)
             {
                 foreach (IProduct product in offer.Products)
                 {
@@ -57,7 +57,7 @@ namespace Eshoppy.SalesModule
         public List<IOffer> GetOffersByTrasportId(Guid transportId)
         {
             List<IOffer> returnOffers = new List<IOffer>();
-            foreach (IOffer offer in offers.Offers)
+            foreach (IOffer offer in Offers.Offers)
             {
                 foreach (ITransport transport in offer.AvailableTransports)
                 {

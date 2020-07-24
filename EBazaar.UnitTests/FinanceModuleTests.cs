@@ -12,6 +12,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EBazaar.UnitTests.Fakes;
+using NSubstitute;
+using Eshoppy.Utils.Interfaces;
 
 namespace EBazaar.UnitTests
 {
@@ -79,7 +81,7 @@ namespace EBazaar.UnitTests
         }
 
         [Test]
-        public void RegisterUser_CheckDateValid_Successful()
+        public void CreateAccount_CheckDateValid_Successful()
         {
             var now = DateTime.Now;
 
@@ -99,6 +101,17 @@ namespace EBazaar.UnitTests
             var expectedAddress = "address";
 
             Assert.AreEqual(expectedAddress, bank.Address);
+        }
+
+        [Test]
+        public void CreateBank_CheckIfBankAddedInList_Successful()
+        {
+
+            manager.CreateBank("bank", "address", "email", "111-111");
+
+            var expectedCount = 4; 
+
+            Assert.AreEqual(expectedCount, ((FinanceManager)manager).BankList.Banks.Count());
         }
 
 
@@ -128,18 +141,20 @@ namespace EBazaar.UnitTests
         public void GetAccountById_CheckDateValid_Successful()
         {
 
-            var account = manager.GetAccountById(new Guid("00000000-0000-0000-0000-300000000001"));
+            var guid = new Guid("00000000-0000-0000-0000-300000000001");
+
+            var account = manager.GetAccountById(guid);
 
             var expectedDateValid = new DateTime(2021, 9, 5);
-
             Assert.AreEqual(expectedDateValid, account.DateValid);
         }
 
         [Test]
         public void GetAccountById_CheckIfExists_Unsuccessful()
         {
+            var guid = new Guid("00000000-0000-0005-0000-300000000001");
 
-            var account = manager.GetAccountById(new Guid("00000000-0000-0005-0000-300000000001"));
+            var account = manager.GetAccountById(guid);
 
             Assert.IsNull(account);
         }
@@ -147,19 +162,20 @@ namespace EBazaar.UnitTests
         [Test]
         public void CheckBallance_ValidateAmount_Successful()
         {
+            var guid = new Guid("00000000-0000-0000-0000-300000000001");
 
-            var amount = manager.CheckBalance(new Guid("00000000-0000-0000-0000-300000000001"));
+            var amount = manager.CheckBalance(guid);
 
             var expectedAmount = 100;
-
             Assert.AreEqual(expectedAmount, amount);
         }
 
         [Test]
         public void CheckBallance_CheckIfAccountExsists_Unsuccessful()
         {
+            var guid = new Guid("00000000-0000-0300-0000-300000000001");
 
-            var amount = manager.CheckBalance(new Guid("00000000-0000-0300-0000-300000000001"));
+            var amount = manager.CheckBalance(guid);
 
             Assert.IsNull(amount);
         }
@@ -168,10 +184,10 @@ namespace EBazaar.UnitTests
         public void Convert_ValidateAmountInDinars_Successful()
         {
             var dolar = new DolarCurrency(1.01);
+
             var amount = manager.Convert(dolar, 50);
 
             var expectedAmount = 50 * 1.01;
-
             Assert.AreEqual(expectedAmount, amount);
         }
 
@@ -179,10 +195,11 @@ namespace EBazaar.UnitTests
         public void CreditPayment_ValidateCreditDebt_Successful()
         {
 
-            manager.CreditPayment(new Guid("00000000-0000-0000-0000-300000000001"), 200);
             var account = manager.GetAccountById(new Guid("00000000-0000-0000-0000-300000000001"));
-            var expectedAmount = 300;
 
+            manager.CreditPayment(new Guid("00000000-0000-0000-0000-300000000001"), 200);
+
+            var expectedAmount = 300;
             Assert.AreEqual(expectedAmount, account.CreditDebt);
         }
 
@@ -208,12 +225,13 @@ namespace EBazaar.UnitTests
             Assert.Throws<ArgumentNullException>(() => manager.AccountPayment(new Guid("00000000-0000-0030-0000-300000000001"), 200));
         }
 
-        [TestCase("00000000-0000-0000-0000-300000000001", TestName = "Check if user exsists")]
-        [TestCase("00000000-0000-0000-0000-500000000001", TestName = "Check if credit exists")]
-        public void AskCredit_EnitiyNotExist_Exception(String creditId)
+        [TestCase("00000000-0000-0000-0000-800000000001", "00000000-0000-0000-0000-500000000001", TestName = "Check if user exsists")]
+        [TestCase("00000000-0000-0000-0000-400000000001", "00000000-0000-0000-0000-300000000001", TestName = "Check if credit exists")]
+        public void AskCredit_EnitiyNotExist_Exception(String userId, String creditId)
         {
             var emailSender = new FakeEmailSender();
             var logger = new FakeLogger();
+
             Assert.Throws<NullReferenceException>(() => manager.AskCredit(new Guid("00000000-0000-0000-0000-300000000001"), 200, new Guid(creditId), 5, emailSender, logger));
         }
 
@@ -281,62 +299,61 @@ namespace EBazaar.UnitTests
             Assert.AreEqual("Credit is approved.", emailSender.Message);
         }
 
-        [TestCase(200, 1, true, TestName = "Condition is not satisfied")]
-        public void AskCredit_ConditionsFailedSendErrorEmail_Successful(double amount, byte years, bool available)
+        [Test]
+        public void AskCredit_ConditionsFailedSendErrorEmail_Successful()
         {
             IAccount account = manager.GetAccountById(new Guid("00000000-0000-0000-0000-300000000001"));
             account.CreditAvailable = true;
             ICredit credit = ((FinanceManager)manager).GetCreditById(new Guid("00000000-0000-0000-0000-500000000001"));
-            credit.Available = available;
+            credit.Available = true;
             var emailSender = new FakeEmailSender();
             var logger = new FakeLogger();
-            manager.AskCredit(new Guid("00000000-0000-0000-0000-400000000001"), amount, new Guid("00000000-0000-0000-0000-500000000001"), years, emailSender, logger);
+            manager.AskCredit(new Guid("00000000-0000-0000-0000-400000000001"), 200, new Guid("00000000-0000-0000-0000-500000000001"), 1, emailSender, logger);
 
             Assert.AreEqual("Credit is not approved", emailSender.Message);
         }
 
-        [TestCase(450, 4, false)]
-        public void AskCredit_CreditNotAvailableSendErrorEmail_Successful(double amount, byte years, bool available)
+        [Test]
+        public void AskCredit_CreditNotAvailableSendErrorEmail_Successful()
         {
             IAccount account = manager.GetAccountById(new Guid("00000000-0000-0000-0000-300000000001"));
             account.CreditAvailable = true;
             ICredit credit = ((FinanceManager)manager).GetCreditById(new Guid("00000000-0000-0000-0000-500000000001"));
-            credit.Available = available;
+            credit.Available = false;
             var emailSender = new FakeEmailSender();
             var logger = new FakeLogger();
-            manager.AskCredit(new Guid("00000000-0000-0000-0000-400000000001"), amount, new Guid("00000000-0000-0000-0000-500000000001"), years, emailSender, logger);
+            manager.AskCredit(new Guid("00000000-0000-0000-0000-400000000001"), 450, new Guid("00000000-0000-0000-0000-500000000001"), 4, emailSender, logger);
 
             Assert.AreEqual("Credit is not available", emailSender.Message);
         }
 
-        [TestCase(200, 1, true)]
-        public void AskCredit_ConditionsFailedLoggMessage_Successful(double amount, byte years, bool available)
+        [Test]
+        public void AskCredit_ConditionsFailedLoggMessage_Successful()
         {
             IAccount account = manager.GetAccountById(new Guid("00000000-0000-0000-0000-300000000001"));
             account.CreditAvailable = true;
             ICredit credit = ((FinanceManager)manager).GetCreditById(new Guid("00000000-0000-0000-0000-500000000001"));
-            credit.Available = available;
+            credit.Available = true;
             var emailSender = new FakeEmailSender();
-            var logger = new FakeLogger();
-            manager.AskCredit(new Guid("00000000-0000-0000-0000-400000000001"), amount, new Guid("00000000-0000-0000-0000-500000000001"), years, emailSender, logger);
+            var logger = Substitute.For<ILogger>();
+            manager.AskCredit(new Guid("00000000-0000-0000-0000-400000000001"), 200, new Guid("00000000-0000-0000-0000-500000000001"), 1, emailSender, logger);
 
-            Assert.AreEqual("Conditions not fulfilled", logger.ErrorMessage);
+            logger.Received().ErrorLogg("Conditions not fulfilled");
         }
 
-        [TestCase(450, 4, false)]
-        public void AskCredit_CreditNotAvailableLoggMessage_Successful(double amount, byte years, bool available)
+        [Test]
+        public void AskCredit_CreditNotAvailableLoggMessage_Successful()
         {
             IAccount account = manager.GetAccountById(new Guid("00000000-0000-0000-0000-300000000001"));
             account.CreditAvailable = true;
             ICredit credit = ((FinanceManager)manager).GetCreditById(new Guid("00000000-0000-0000-0000-500000000001"));
-            credit.Available = available;
+            credit.Available = false;
             var emailSender = new FakeEmailSender();
-            var logger = new FakeLogger();
-            manager.AskCredit(new Guid("00000000-0000-0000-0000-400000000001"), amount, new Guid("00000000-0000-0000-0000-500000000001"), years, emailSender, logger);
+            var logger = Substitute.For<ILogger>();
+            manager.AskCredit(new Guid("00000000-0000-0000-0000-400000000001"), 450, new Guid("00000000-0000-0000-0000-500000000001"), 4, emailSender, logger);
 
-            Assert.AreEqual("Credit is not available", logger.ErrorMessage);
+            logger.Received().ErrorLogg("Credit is not available");
         }
-
 
     }
 }

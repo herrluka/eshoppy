@@ -142,9 +142,5 @@ namespace Eshoppy.UserModule
             }
         }
 
-        public ShoppingClient GetShoppingClient()
-        {
-            return this.ClientList;
-        }
     }
 }

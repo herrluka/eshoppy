@@ -54,7 +54,9 @@ namespace EBazaar.UnitTests
         public void CreateProduct_ValidateCreation_Successful()
         {
             IProduct product = new Product("prod", 22.5, 44.5);
+
             IProduct productTest = manager.CreateProduct("prod", 22.5, 44.5);
+
             Assert.AreEqual(product.Name, productTest.Name);
         }
 
@@ -106,18 +108,31 @@ namespace EBazaar.UnitTests
         }
 
         [Test]
-        public void CreateOffer_ValidateCreation_Successful()
+        public void CreateOffer_ValidateCreationWithOfferPrice_Successful()
         {
             var product1 = new Product("Product1", 2, 5);
             var product2 = new Product("Product2", 3, 10);
             var product3 = new Product("Product3", 4, 23);
             var product4 = new Product("Product4", 5, 23);
-            var offer = new Offer(new List<IProduct>() { product1, product2, product3, product4 }, new DateTime(DateTime.Now.Year - 1, 1, DateTime.Now.Day), DateTime.Now, new List<ITransport>());
-            offer.OfferPrice = offer.GetPriceAsSumOfProducts(new DateTime(2020, 1, 1));
+           
+            var offer = manager.CreateOffer(new List<IProduct>() { product1, product2, product3, product4 }, new DateTime(DateTime.Now.Year - 1, 1, DateTime.Now.Day), DateTime.Now, new List<ITransport>());
 
-            var expected_price = (product1.Price + product2.Price + product3.Price + product4.Price) * (1 - 0.22);
+            var expectedPrice = (product1.Price + product2.Price + product3.Price + product4.Price) * (1 - 0.17);
+            Assert.AreEqual(expectedPrice, offer.OfferPrice);
+        }
 
-            Assert.AreEqual(expected_price, offer.OfferPrice);
+        [Test]
+        public void CreateOffer_CheckIfOrderAddedInList_Successful()
+        {
+            var product1 = new Product("Product1", 2, 5);
+            var product2 = new Product("Product2", 3, 10);
+            var product3 = new Product("Product3", 4, 23);
+            var product4 = new Product("Product4", 5, 23);
+
+            manager.CreateOffer(new List<IProduct>() { product1, product2, product3, product4 }, new DateTime(DateTime.Now.Year - 1, 1, DateTime.Now.Day), DateTime.Now, new List<ITransport>());
+
+            var expectedCount = 4;
+            Assert.AreEqual(expectedCount, ((SalesManager)manager).Offers.Offers.Count());
         }
 
 
@@ -148,7 +163,7 @@ namespace EBazaar.UnitTests
 
             var expectedId = new Guid("00000000-0000-0000-0000-300000000003");
 
-            Assert.AreEqual(expectedId ,offer.Id);
+            Assert.AreEqual(expectedId, offer.Id);
         }
 
         [Test]

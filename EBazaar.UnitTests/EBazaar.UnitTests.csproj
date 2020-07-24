@@ -61,12 +61,11 @@
     <Compile Include="Fakes\FakeClientManager.cs" />
     <Compile Include="Fakes\FakeEmailSender.cs" />
     <Compile Include="Fakes\FakeLogger.cs" />
-    <Compile Include="FinanceModuleNSubstituteTests.cs" />
     <Compile Include="FinanceModuleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SalesManagerTests.cs" />
     <Compile Include="TransactionModuleTests.cs" />
-    <Compile Include="UserModuleNSubstituteTests.cs" />
+    <Compile Include="ClientModuleNSubstituteTests.cs" />
     <Compile Include="UserModuleTests.cs" />
   </ItemGroup>
   <ItemGroup>

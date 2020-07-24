@@ -70,7 +70,7 @@ namespace EBazaar.UnitTests
 
             var expectedNumber = 5;
 
-            Assert.AreEqual(expectedNumber, ((ClientManager)userManager).GetShoppingClient().Clients.Count);
+            Assert.AreEqual(expectedNumber, ((ClientManager)userManager).ClientList.Clients.Count);
         }
 
         [Test]
@@ -78,10 +78,9 @@ namespace EBazaar.UnitTests
         {
             userManager.RegisterUser("user", "surUser", "usr@email.com", "111-111", "address");
 
+            var client = ((ClientManager)userManager).ClientList.Clients.Last();
+
             var expectedName = "user";
-
-            var client = ((ClientManager)userManager).GetShoppingClient().Clients.Last();
-
             Assert.AreEqual(expectedName, ((User)client).Name);
         }
 
@@ -92,7 +91,7 @@ namespace EBazaar.UnitTests
 
             var expectedNumber = 5;
 
-            Assert.AreEqual(expectedNumber, ((ClientManager)userManager).GetShoppingClient().Clients.Count);
+            Assert.AreEqual(expectedNumber, ((ClientManager)userManager).ClientList.Clients.Count);
         }
 
         [Test]
@@ -102,7 +101,7 @@ namespace EBazaar.UnitTests
 
             var expectedTin = 44;
 
-            var client = ((ClientManager)userManager).GetShoppingClient().Clients.Last();
+            var client = ((ClientManager)userManager).ClientList.Clients.Last();
 
             Assert.AreEqual(expectedTin, ((Organization)client).Tin);
         }
